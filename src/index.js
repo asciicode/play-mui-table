@@ -1,16 +1,28 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { MuiThemeProvider, createMuiTheme } from '@material-ui/core'
-import { purple } from '@material-ui/core/colors'
+import { purple, red } from '@material-ui/core/colors'
 // import './index.css';
 import ReactVirtualizedTable from './ReactVirtualizedTable'
 import ReactWin from './ReactWin';
 
 const theme = createMuiTheme({
   palette: {
-    primary: purple,
-    //type: 'dark'
-  }
+    primary: red,
+    // type: 'dark'
+  },
+  overrides: {
+    MuiTableCell: { // Name of the component ⚛️ / style sheet
+      root: {
+        // borderBottomColor: 'green'
+      },
+      body: {
+        // color: red[500],
+        // fontSize: theme.typography.pxToRem(13),
+        // fontWeight: theme.typography.fontWeightRegular,
+      },
+    },
+  },
 })
 
 console.log(theme)

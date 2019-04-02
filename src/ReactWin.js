@@ -12,7 +12,9 @@ const styles = theme => ({
   flexContainer: {
     display: 'flex',
     alignItems: 'center',
-    padding: 0
+    padding: 0,
+    // color: 'green'
+    // backgroundColor: theme.palette.secondary.dark
   },
   // tableRow: {
   //   cursor: 'pointer',
@@ -54,7 +56,7 @@ const CustomTableCell = withStyles(theme => ({
 const GUTTER_SIZE = 10;
 function Cell(props){
   const { columnIndex, rowIndex, style, classes, className } = props
-  console.log(props)
+  // console.log(props)
   const gridClz = columnIndex % 2
     ? rowIndex % 2 === 0
       ? 'GridItemOdd'
@@ -95,7 +97,7 @@ function Cell(props){
 const MuiCell = withStyles(styles)(Cell)
 
 const ReactWin = (props) => {
-  console.log(props)
+    console.log(props)
   const { classes } = props;
   return (
     <Grid
