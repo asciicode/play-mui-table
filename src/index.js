@@ -9,7 +9,7 @@ import ReactWin from './ReactWin';
 const theme = createMuiTheme({
   palette: {
     primary: purple,
-    // type: 'dark'
+    //type: 'dark'
   }
 })
 

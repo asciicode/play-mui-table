@@ -9,11 +9,11 @@ const styles = theme => ({
   table: {
     fontFamily: theme.typography.fontFamily,
   },
-  // flexContainer: {
-  //   display: 'flex',
-  //   alignItems: 'center',
-  //   boxSizing: 'border-box',
-  // },
+  flexContainer: {
+    display: 'flex',
+    alignItems: 'center',
+    padding: 0
+  },
   // tableRow: {
   //   cursor: 'pointer',
   // },
@@ -53,8 +53,8 @@ const CustomTableCell = withStyles(theme => ({
 }))(TableCell);
 const GUTTER_SIZE = 10;
 function Cell(props){
-  const { columnIndex, rowIndex, style, classes } = props
-  console.log(classes)
+  const { columnIndex, rowIndex, style, classes, className } = props
+  console.log(props)
   const gridClz = columnIndex % 2
     ? rowIndex % 2 === 0
       ? 'GridItemOdd'
@@ -65,15 +65,12 @@ function Cell(props){
   // console.log(gridClz)
   return (
     <TableCell
+      className={classNames(classes.tableCell, classes.flexContainer)}
       component="div"
       variant="body"
-      padding="none"
-      align="justify"
       style={{
       ...style,
-      top: style.top + GUTTER_SIZE,
-      display: 'flex',
-      alignItems: 'center'
+      top: style.top + GUTTER_SIZE
     }}
     >
       r{rowIndex}, c{columnIndex}
@@ -95,7 +92,7 @@ function Cell(props){
   // </div>
 )}
 
-// const MuiCell = withStyles(styles)(Cell)
+const MuiCell = withStyles(styles)(Cell)
 
 const ReactWin = (props) => {
   console.log(props)
@@ -110,7 +107,7 @@ const ReactWin = (props) => {
       rowHeight={index => rowHeights[index]}
       width={700}
     >
-      {Cell}
+      {MuiCell}
     </Grid>
 
 )}
