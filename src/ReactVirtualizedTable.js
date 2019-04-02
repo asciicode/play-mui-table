@@ -10,6 +10,7 @@ import Paper from '@material-ui/core/Paper';
 import { AutoSizer, Column, SortDirection, Table } from 'react-virtualized';
 
 const styles = theme => ({
+  paddingRight: 2,
   table: {
     fontFamily: theme.typography.fontFamily,
   },
@@ -27,7 +28,8 @@ const styles = theme => ({
     },
   },
   tableCell: {
-    flex: 1,
+    flex: 2,
+    fontSize: 14,
   },
   noClick: {
     cursor: 'initial',
@@ -48,14 +50,14 @@ class MuiVirtualizedTable extends React.PureComponent {
     return (
       <TableCell
         component="div"
-        className={classNames(classes.tableCell, classes.flexContainer, {
+        className={classNames(classes.tableCell, {
           [classes.noClick]: onRowClick == null,
         })}
         variant="body"
         style={{ height: rowHeight }}
         align={(columnIndex != null && columns[columnIndex].numeric) || false ? 'right' : 'left'}
       >
-        asc{cellData}
+        {cellData}
       </TableCell>
     );
   };
