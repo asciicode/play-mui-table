@@ -91,7 +91,7 @@ class MuiVirtualizedTable extends React.PureComponent {
 
   render() {
     const { classes, columns, ...tableProps } = this.props;
-    console.log(tableProps)
+    console.log(this.props)
     return (
       <AutoSizer disableWidth>
         {({ height, width }) => (
@@ -158,6 +158,7 @@ MuiVirtualizedTable.defaultProps = {
   rowHeight: 56,
 };
 
+// ALLEN : passes the classes property
 const WrappedVirtualizedTable = withStyles(styles)(MuiVirtualizedTable);
 
 const data = [
