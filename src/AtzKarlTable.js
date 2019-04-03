@@ -138,7 +138,7 @@ function AtzKarlTable(props) {
       <FormGroup >
         <FormControlLabel
           control={
-            <Checkbox checked={overtime} onChange={handleOvertimeToggle} value="" color="primary"/>
+            <Checkbox checked={overtime} onChange={handleOvertimeToggle} value="" />
           }
           label="Overtime"
         />
