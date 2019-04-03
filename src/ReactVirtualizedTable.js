@@ -12,7 +12,7 @@ import { AutoSizer, Column, SortDirection, Table } from 'react-virtualized';
 const styles = theme => ({
   paddingRight: 2,
   table: {
-    fontFamily: theme.typography.fontFamily,
+    // fontFamily: theme.typography.fontFamily,
   },
   flexContainer: {
     display: 'flex',
