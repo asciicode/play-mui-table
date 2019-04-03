@@ -11,6 +11,7 @@ import AtzKarlTable from './AtzKarlTable';
 const theme = createMuiTheme({
   typography: {
     useNextVariants: true,
+    fontSize: 12,
   },
   palette: {
     // primary: red,
@@ -18,13 +19,32 @@ const theme = createMuiTheme({
   },
   overrides: {
     MuiTableCell: { // Name of the component ⚛️ / style sheet
+      head: {
+        // borderBottomColor: 'green'0
+        fontSize: 12
+      },
       root: {
         // borderBottomColor: 'green'0
-        padding: 0
+        padding: 0,
       },
       body: {
         // color: 'white',
       },
+    },
+    MuiInputBase: {
+      root: {
+        fontSize: 12
+      }
+    },
+    MuiMenuItem: {
+      root: {
+        // fontSize: 12
+      }
+    },
+    MuiButton: {
+      root: {
+        // fontSize: 12
+      }
     },
   },
 })

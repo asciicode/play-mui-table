@@ -14,14 +14,18 @@ import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
 import TextField from '@material-ui/core/TextField';
 import classNames from 'classnames';
+import InputBase from '@material-ui/core/InputBase';
+import Button from '@material-ui/core/Button';
+import Menu from '@material-ui/core/Menu';
+import MenuItem from '@material-ui/core/MenuItem';
 
 const CustomTableCell = withStyles(theme => ({
   head: {
     backgroundColor: theme.palette.common.black,
     color: theme.palette.common.white,
   },
-  body: {
-    fontSize: 14,
+  root: {
+    paddingLeft: 5,
   },
 }))(TableCell);
 
@@ -59,10 +63,41 @@ const styles = theme => ({
   textField: {
     // marginLeft: theme.spacing.unit,
     marginRight: theme.spacing.unit,
-    width: 30,
+    width: 30
+  },
+  InputProps: {
+    textAlign: 'center'
   },
   dense: {
     // marginTop: 19,
+  },
+  bootstrapRoot: {
+    'label + &': {
+      marginTop: theme.spacing.unit * 3,
+    },
+  },
+  bootstrapInput: {
+    textAlign: 'center'
+  },
+  divTableTop: {
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'space-between'
+  },
+  openMenu: {
+    textTransform: 'none'
+  },
+  button: {
+    margin: theme.spacing.unit,
+  },
+  leftIcon: {
+    marginRight: theme.spacing.unit,
+  },
+  rightIcon: {
+    marginLeft: theme.spacing.unit,
+  },
+  iconSmall: {
+    fontSize: 20,
   },
 });
 
@@ -73,33 +108,67 @@ function createData(name, calories, fat, carbs, protein) {
 }
 
 const rows = [
-  createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-  createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-  createData('Eclair', 262, 16.0, 24, 6.0),
-  createData('Cupcake', 305, 3.7, 67, 4.3),
-  createData('Gingerbread', 356, 16.0, 49, 3.9),
+  createData('Juan', 159, 6.0, 24, 4.0),
+  createData('Pedro', 237, 9.0, 37, 4.3),
+  createData('Socrates', 262, 16.0, 24, 6.0),
+  createData('Ascii', 305, 3.7, 67, 4.3),
+  createData('Goryo', 356, 16.0, 49, 3.9),
 ];
 
 function AtzKarlTable(props) {
-  const [overtime, setOvertime] = React.useState(true)
+  const [overtime, setOvertime] = React.useState(false)
+  const [anchorEl, setAnchorEl] = React.useState(null);
+
   const { classes } = props
   console.log(props, overtime)
 
   const handleOvertimeToggle = () => {
     setOvertime(!overtime)
   }
+  function handleClick(event) {
+    setAnchorEl(event.currentTarget);
+  }
 
+  function handleClose() {
+    setAnchorEl(null);
+  }
   return (
     <Paper className={classes.tableWrap}>
-    <div >
+    <div className={classes.divTableTop}>
       <FormGroup >
         <FormControlLabel
           control={
-            <Checkbox checked={overtime} onChange={handleOvertimeToggle} value="" />
+            <Checkbox checked={overtime} onChange={handleOvertimeToggle} value="" color="primary"/>
           }
           label="Overtime"
         />
       </FormGroup>
+      <div  style={{display:'flex',flexDirection:'row',maxWidth:500}}>
+        <Button variant="contained" color="primary" size="small" className={classes.button}>
+          Add New Employee
+          {/* This Button uses a Font Icon, see the installation instructions in the docs. */}
+          <Icon className={classes.rightIcon}>person_add</Icon>
+        </Button>
+        <Button variant="contained" color="primary" size="small" className={classes.button}>
+          Add Employee To Payroll
+          {/* This Button uses a Font Icon, see the installation instructions in the docs. */}
+          <Icon className={classes.rightIcon}>group_add</Icon>
+        </Button>
+
+      </div>
+      {/*<Button
+        aria-owns={anchorEl ? 'simple-menu' : undefined}
+        aria-haspopup="true"
+        onClick={handleClick} className={classes.openMenu}
+      >
+        Actions
+      </Button>
+      <Menu id="simple-menu" anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
+        <MenuItem onClick={handleClose}>Add New Employee</MenuItem>
+        <MenuItem onClick={handleClose}>Add Employee to this Payroll</MenuItem>
+        <MenuItem onClick={handleClose}>Add Employee to this Payrollz</MenuItem>
+      </Menu>*/}
+
     </div>
     <Paper className={classes.root}>
       <Table className={classes.table}>
@@ -161,6 +230,7 @@ function AtzKarlTable(props) {
                 id="standard-dense"
                 className={classNames(classes.textField, classes.dense)}
                 margin="dense"
+                inputProps={{step: 300,}}
               />
               </CustomTableCell>
               <CustomTableCell >
