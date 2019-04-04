@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { withStyles } from '@material-ui/core/styles';
+import { withStyles, makeStyles, useTheme } from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -230,7 +230,7 @@ function AtzKarlTable(props) {
                 id="standard-dense"
                 className={classNames(classes.textField, classes.dense)}
                 margin="dense"
-                inputProps={{step: 300,}}
+                inputProps={{step: 300, className : classNames(classes.textField)}}
               />
               </CustomTableCell>
               <CustomTableCell >
@@ -319,7 +319,7 @@ function AtzKarlTable(props) {
 }
 
 AtzKarlTable.propTypes = {
-  classes: PropTypes.object.isRequired,
+  classes: PropTypes.object.isRequired,styles
 };
 
 export default withStyles(styles)(AtzKarlTable);
