@@ -4,17 +4,15 @@ import React from "react";
 function payrollEmployeesReducer(state, action) {
   switch (action.type) {
     case payrollActionTypes.ADD: {
-      console.log(action.payload);
-
+      // console.log(action.payload);
       return [...state, action.payload];
     }
     case payrollActionTypes.ADD_ALL: {
-      console.log(action.payload);
-
+      // console.log(action.payload);
       return [...state, ...action.payload];
     }
     default:
-      throw new Error("Unhandled type ${action.type}");
+      throw new Error(`Unhandled type ${action.type}`);
   }
 }
 

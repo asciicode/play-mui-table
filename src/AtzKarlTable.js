@@ -129,45 +129,19 @@ function AtzKarlTable(props) {
   }, []);
 
   const handleSearchAddClick = employees => {
-    console.log(employees, state);
-    console.log(selectEmployees);
-
-    const newSelEmployees = [];
-    const addEmps = [];
-    let done = false;
-    employees.forEach(i => {
-      selectEmployees.forEach(j => {
-        if (j.employeeId === i.value) {
-          addEmps.push(j);
-        }
-        // TODOs
-        if (i.value !== j.employeeId) {
-          console.log("pop ", j.fullname);
-          // newSelEmployees.push(j);
-          // selectEmployees.pop(j);
-        }
+    // console.log(employees, state);
+    if (employees != null) {
+      const addEmps = [];
+      employees.forEach(i => {
+        const ndx = selectEmployees.findIndex(
+          rec => rec.employeeId === i.value
+        );
+        addEmps.push(selectEmployees[ndx]);
+        selectEmployees.splice(ndx, 1);
       });
-
-      done = true;
-    });
-    console.log(newSelEmployees);
-    // setSelectEmployees(newSelEmployees);
-    addAll(addEmps);
-    // employees.forEach(element => {
-    //   const selEmp = selectEmployees.find(
-    //     rec => rec.employeeId === element.value
-    //   );
-    //   add(selEmp);
-    // setSelectEmployees();
-
-    //   console.log(
-    //     element,
-    // selectEmployees,
-    //     setSelectEmployees(
-    //       selectEmployees.filter(rec => rec.employeeId !== element.value)
-    //     )
-    //   );
-    // });
+      // console.log(selectEmployees);
+      addAll(addEmps);
+    }
   };
   const handleOvertimeToggle = () => {
     setOvertime(!overtime);
