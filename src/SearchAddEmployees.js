@@ -231,7 +231,7 @@ const SearchAddEmployees = props => {
   // ALLEN new @material-ui/styles package separate from @material-ui/core/styles
   const { theme, classes } = props;
   // const classes = useStyles(theme)
-  console.log(props.employees);
+  // console.log(props);
 
   const [multi, setMulti] = React.useState(null);
 
@@ -258,37 +258,41 @@ const SearchAddEmployees = props => {
 
   return (
     <div className={classes.root}>
-      <div style={{ flexGrow: 1 }}>
-        <Select
-          classes={classes}
-          styles={selectStyles}
-          textFieldProps={{
-            label: "",
-            InputLabelProps: {
-              shrink: true
-            }
-          }}
-          options={props.employees.map(rec => ({
-            value: rec.employeeId,
-            label: rec.fullname
-          }))}
-          components={components}
-          value={multi}
-          onChange={handleChangeMulti}
-          placeholder="Select multiple employees"
-          isMulti
-        />
-      </div>
-      <div>
-        <Fab
-          color="primary"
-          aria-label="Add"
-          size="small"
-          onClick={handleClickAdd}
-        >
-          <AddIcon />
-        </Fab>
-      </div>
+      {props.employees !== undefined &&
+        <React.Fragment>
+        <div style={{ flexGrow: 1 }}>
+          <Select
+            classes={classes}
+            styles={selectStyles}
+            textFieldProps={{
+              label: "",
+              InputLabelProps: {
+                shrink: true
+              }
+            }}
+            options={props.employees.map(rec => ({
+              value: rec.employeeId,
+              label: rec.fullname
+            }))}
+            components={components}
+            value={multi}
+            onChange={handleChangeMulti}
+            placeholder="Select multiple employees"
+            isMulti
+          />
+        </div>
+        <div>
+          <Fab
+            color="primary"
+            aria-label="Add"
+            size="small"
+            onClick={handleClickAdd}
+          >
+            <AddIcon />
+          </Fab>
+        </div>
+        </React.Fragment>
+      }
     </div>
   );
 };

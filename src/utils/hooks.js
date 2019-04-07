@@ -8,7 +8,7 @@ function payrollEmployeesReducer(state, action) {
       return [...state, action.payload];
     }
     case payrollActionTypes.ADD_ALL: {
-      // console.log(action.payload);
+      // console.log(state, action.payload);
       return [...state, ...action.payload];
     }
     default:

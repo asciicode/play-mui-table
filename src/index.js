@@ -44,7 +44,7 @@ const theme = createMuiTheme({
   }
 });
 
-export const AppContext = React.createContext();
+// export const AppContext = React.createContext();
 // console.log(theme);
 // import * as serviceWorker from './serviceWorker';
 
@@ -63,11 +63,11 @@ export const AppContext = React.createContext();
 // );
 // ReactDOM.render(<TodoList />, document.getElementById('root'));
 ReactDOM.render(
-  <AppContext.Provider value={generatePayrollRows()}>
+
     <MuiThemeProvider theme={theme}>
       <AtzKarlTable />
     </MuiThemeProvider>
-  </AppContext.Provider>,
+  ,
   document.getElementById("root")
 );
 

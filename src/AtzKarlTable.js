@@ -23,7 +23,8 @@ import SearchAddEmployees from "./SearchAddEmployees";
 import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
 import { usePayrollEmployees } from "./utils/hooks";
-import { AppContext } from ".";
+// import { AppContext } from ".";
+import { generatePayrollRows } from "./data/payroll";
 
 const CustomTableCell = withStyles(theme => ({
   head: {
@@ -107,22 +108,21 @@ const stylez = theme => ({
 });
 
 function AtzKarlTable(props) {
-  const { payrollEmployees, remainingEmployees } = React.useContext(AppContext);
   const [overtime, setOvertime] = React.useState(false);
   // const [anchorEl, setAnchorEl] = React.useState(null);
-  const [selectEmployees, setSelectEmployees] = React.useState(
-    remainingEmployees
-  );
-  const [state, add, addAll] = usePayrollEmployees(payrollEmployees);
+  const [selectEmployees, setSelectEmployees] = React.useState();
+  const [state, add, addAll] = usePayrollEmployees();
   const { classes } = props;
-  // const { payrollEmployees, remainingEmployees } = state;
-  console.log(selectEmployees);
+  // console.log(state);
 
   React.useEffect(() => {
     console.log("useEffect here...");
     // const { tableEmployees, remainingEmployees } = ;
     // console.log(tableEmployees);
     // const { tableEmployees, remainingEmployees } = props;
+    const { payrollEmployees, remainingEmployees } = generatePayrollRows()
+    addAll(payrollEmployees)
+    setSelectEmployees(remainingEmployees)
     return () => {
       console.log("useEffect here unmounting...");
     };
@@ -153,7 +153,7 @@ function AtzKarlTable(props) {
   //   setAnchorEl(null);
   // }
   // let textInput = React.createRef();
-  // console.log(textInput);
+  // console.log(Object.entries(state).length > 0);
 
   return (
     <Paper className={classes.tableWrap}>
@@ -236,7 +236,7 @@ function AtzKarlTable(props) {
           </TableHead>
 
           <TableBody>
-            {state.map(row => (
+            {Object.entries(state).length > 0 && state.map(row => (
               <TableRow
                 className={classNames(classes.row, classes.tableRowHover)}
                 key={row.employeeId}
