@@ -1,325 +1,467 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { withStyles, makeStyles, useTheme } from '@material-ui/core/styles';
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-import Icon from '@material-ui/core/Icon';
-import red from '@material-ui/core/colors/red';
-import FormGroup from '@material-ui/core/FormGroup';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import TextField from '@material-ui/core/TextField';
-import classNames from 'classnames';
-import InputBase from '@material-ui/core/InputBase';
-import Button from '@material-ui/core/Button';
-import Menu from '@material-ui/core/Menu';
-import MenuItem from '@material-ui/core/MenuItem';
+import React from "react";
+import PropTypes from "prop-types";
+import { withStyles, makeStyles, useTheme } from "@material-ui/core/styles";
+import Table from "@material-ui/core/Table";
+import TableBody from "@material-ui/core/TableBody";
+import TableCell from "@material-ui/core/TableCell";
+import TableHead from "@material-ui/core/TableHead";
+import TableRow from "@material-ui/core/TableRow";
+import Paper from "@material-ui/core/Paper";
+import Icon from "@material-ui/core/Icon";
+import red from "@material-ui/core/colors/red";
+import FormGroup from "@material-ui/core/FormGroup";
+import FormControlLabel from "@material-ui/core/FormControlLabel";
+import Checkbox from "@material-ui/core/Checkbox";
+import TextField from "@material-ui/core/TextField";
+import classNames from "classnames";
+import InputBase from "@material-ui/core/InputBase";
+import Button from "@material-ui/core/Button";
+import Menu from "@material-ui/core/Menu";
+import MenuItem from "@material-ui/core/MenuItem";
+import { onKeyUpAmount } from "./utils/handy";
+import SearchAddEmployees from "./SearchAddEmployees";
+import Fab from "@material-ui/core/Fab";
+import AddIcon from "@material-ui/icons/Add";
+import { usePayrollEmployees } from "./utils/hooks";
+import { AppContext } from ".";
 
 const CustomTableCell = withStyles(theme => ({
   head: {
-    backgroundColor: theme.palette.common.black,
-    color: theme.palette.common.white,
+    backgroundColor:
+      theme.palette.type === "light"
+        ? theme.palette.common.black
+        : theme.palette.common.black,
+    color:
+      theme.palette.type === "light"
+        ? theme.palette.common.white
+        : theme.palette.common.white,
+    fontSize: 12,
+    whiteSpace: "nowrap"
   },
   root: {
-    paddingLeft: 5,
-  },
+    paddingLeft: 5
+  }
 }))(TableCell);
 
-const styles = theme => ({
+const stylez = theme => ({
+  input: base => ({
+    ...base,
+    color: theme.palette.text.primary,
+    "& input": {
+      font: "inherit"
+    }
+  }),
   tableWrap: {
     // display: 'flex',
     borderRadius: 4,
-    justifyCenter: 'center',
+    justifyCenter: "center",
     backgroundColor: theme.palette.background.paper,
     padding: 24
   },
+  tableRowHover: {
+    "&:hover": {
+      backgroundColor:
+        theme.palette.type === "light"
+          ? theme.palette.grey[200]
+          : theme.palette.grey[900]
+    }
+  },
   root: {
-    width: '100%',
-    // marginTop: theme.spacing.unit * 3,
-    overflowX: 'auto',
-
+    width: "100%",
+    marginTop: theme.spacing.unit,
+    overflowX: "auto"
   },
   table: {
-    minWidth: 700,
+    minWidth: 700
   },
   row: {
-    '&:nth-of-type(odd)': {
-      backgroundColor: theme.palette.background.default,
-    },
-  },
-  iconHover: {
-    margin: theme.spacing.unit * 2,
-    '&:hover': {
-      color: red[800],
-    },
+    "&:nth-of-type(odd)": {
+      backgroundColor: theme.palette.background.default
+    }
   },
   overtimeBox: {
-    border: '2px solid white'
+    border: "1px solid white"
   },
-  textField: {
-    // marginLeft: theme.spacing.unit,
+  dayTextField: {
+    marginLeft: theme.spacing.unit,
     marginRight: theme.spacing.unit,
-    width: 30
+    width: 30,
+    fontSize: 12
   },
   InputProps: {
-    textAlign: 'center'
+    textAlign: "center"
   },
   dense: {
     // marginTop: 19,
   },
-  bootstrapRoot: {
-    'label + &': {
-      marginTop: theme.spacing.unit * 3,
-    },
-  },
-  bootstrapInput: {
-    textAlign: 'center'
-  },
   divTableTop: {
-    display: 'flex',
-    flexDirection: 'row',
-    justifyContent: 'space-between'
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between"
   },
-  openMenu: {
-    textTransform: 'none'
-  },
-  button: {
-    margin: theme.spacing.unit,
-  },
-  leftIcon: {
-    marginRight: theme.spacing.unit,
-  },
-  rightIcon: {
-    marginLeft: theme.spacing.unit,
-  },
-  iconSmall: {
-    fontSize: 20,
-  },
+  tdCell: {
+    paddingLeft: 5,
+    paddingRight: 5,
+    textAlign: "right"
+  }
 });
 
-let id = 0;
-function createData(name, calories, fat, carbs, protein) {
-  id += 1;
-  return { id, name, calories, fat, carbs, protein };
-}
-
-const rows = [
-  createData('Juan', 159, 6.0, 24, 4.0),
-  createData('Pedro', 237, 9.0, 37, 4.3),
-  createData('Socrates', 262, 16.0, 24, 6.0),
-  createData('Ascii', 305, 3.7, 67, 4.3),
-  createData('Goryo', 356, 16.0, 49, 3.9),
-];
-
 function AtzKarlTable(props) {
-  const [overtime, setOvertime] = React.useState(false)
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const { payrollEmployees, remainingEmployees } = React.useContext(AppContext);
+  const [overtime, setOvertime] = React.useState(false);
+  // const [anchorEl, setAnchorEl] = React.useState(null);
+  const [selectEmployees, setSelectEmployees] = React.useState(
+    remainingEmployees
+  );
+  const [state, add, addAll] = usePayrollEmployees(payrollEmployees);
+  const { classes } = props;
+  // const { payrollEmployees, remainingEmployees } = state;
+  console.log(selectEmployees);
 
-  const { classes } = props
-  console.log(props, overtime)
+  React.useEffect(() => {
+    console.log("useEffect here...");
+    // const { tableEmployees, remainingEmployees } = ;
+    // console.log(tableEmployees);
+    // const { tableEmployees, remainingEmployees } = props;
+    return () => {
+      console.log("useEffect here unmounting...");
+    };
+  }, []);
 
+  const handleSearchAddClick = employees => {
+    console.log(employees, state);
+    console.log(selectEmployees);
+
+    const newSelEmployees = [];
+    const addEmps = [];
+    let done = false;
+    employees.forEach(i => {
+      selectEmployees.forEach(j => {
+        if (j.employeeId === i.value) {
+          addEmps.push(j);
+        }
+        // TODOs
+        if (i.value !== j.employeeId) {
+          console.log("pop ", j.fullname);
+          // newSelEmployees.push(j);
+          // selectEmployees.pop(j);
+        }
+      });
+
+      done = true;
+    });
+    console.log(newSelEmployees);
+    // setSelectEmployees(newSelEmployees);
+    addAll(addEmps);
+    // employees.forEach(element => {
+    //   const selEmp = selectEmployees.find(
+    //     rec => rec.employeeId === element.value
+    //   );
+    //   add(selEmp);
+    // setSelectEmployees();
+
+    //   console.log(
+    //     element,
+    // selectEmployees,
+    //     setSelectEmployees(
+    //       selectEmployees.filter(rec => rec.employeeId !== element.value)
+    //     )
+    //   );
+    // });
+  };
   const handleOvertimeToggle = () => {
-    setOvertime(!overtime)
-  }
-  function handleClick(event) {
-    setAnchorEl(event.currentTarget);
-  }
+    setOvertime(!overtime);
+  };
+  // function handleClick(event) {
+  //   setAnchorEl(event.currentTarget);
+  // }
+  // function handleClose() {
+  //   setAnchorEl(null);
+  // }
+  // let textInput = React.createRef();
+  // console.log(textInput);
 
-  function handleClose() {
-    setAnchorEl(null);
-  }
   return (
     <Paper className={classes.tableWrap}>
-    <div className={classes.divTableTop}>
-      <FormGroup >
-        <FormControlLabel
-          control={
-            <Checkbox checked={overtime} onChange={handleOvertimeToggle} value="" />
-          }
-          label="Overtime"
+      <div className={classes.divTableTop}>
+        <FormGroup>
+          <FormControlLabel
+            control={
+              <Checkbox
+                checked={overtime}
+                onChange={handleOvertimeToggle}
+                value=""
+              />
+            }
+            label="Overtime"
+          />
+        </FormGroup>
+        <SearchAddEmployees
+          employees={selectEmployees}
+          onClickAdd={handleSearchAddClick}
         />
-      </FormGroup>
-      <div  style={{display:'flex',flexDirection:'row',maxWidth:500}}>
-        <Button variant="contained" color="primary" size="small" className={classes.button}>
-          Add New Employee
-          {/* This Button uses a Font Icon, see the installation instructions in the docs. */}
-          <Icon className={classes.rightIcon}>person_add</Icon>
-        </Button>
-        <Button variant="contained" color="primary" size="small" className={classes.button}>
-          Add Employee To Payroll
-          {/* This Button uses a Font Icon, see the installation instructions in the docs. */}
-          <Icon className={classes.rightIcon}>group_add</Icon>
-        </Button>
-
       </div>
-      {/*<Button
-        aria-owns={anchorEl ? 'simple-menu' : undefined}
-        aria-haspopup="true"
-        onClick={handleClick} className={classes.openMenu}
-      >
-        Actions
-      </Button>
-      <Menu id="simple-menu" anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
-        <MenuItem onClick={handleClose}>Add New Employee</MenuItem>
-        <MenuItem onClick={handleClose}>Add Employee to this Payroll</MenuItem>
-        <MenuItem onClick={handleClose}>Add Employee to this Payrollz</MenuItem>
-      </Menu>*/}
-
-    </div>
-    <Paper className={classes.root}>
-      <Table className={classes.table}>
-      { overtime &&
-        <>
-        <TableHead>
-        <TableRow>
-          <CustomTableCell colSpan={2} className={classes.overtimeBox}></CustomTableCell>
-          <CustomTableCell colSpan={8} align="center" className={classes.overtimeBox}>Ordinary</CustomTableCell>
-          <CustomTableCell colSpan={8} align="center" className={classes.overtimeBox}>Overtime</CustomTableCell>
-          <CustomTableCell colSpan={3} className={classes.overtimeBox}></CustomTableCell>
-        </TableRow>
-        </TableHead>
-        </>
-      }
-      <TableHead>
-        <TableRow>
-          <CustomTableCell>Employee</CustomTableCell>
-          <CustomTableCell >Worker Description</CustomTableCell>
-
-          <CustomTableCell >Rate</CustomTableCell>
-          <CustomTableCell >M</CustomTableCell>
-          <CustomTableCell >T</CustomTableCell>
-          <CustomTableCell >W</CustomTableCell>
-          <CustomTableCell >Th</CustomTableCell>
-          <CustomTableCell >F</CustomTableCell>
-          <CustomTableCell >No. of Hrs</CustomTableCell>
-          <CustomTableCell >Total Amt</CustomTableCell>
-          { overtime &&
-              <>
-              <CustomTableCell >Rate</CustomTableCell>
-              <CustomTableCell >M</CustomTableCell>
-              <CustomTableCell >T</CustomTableCell>
-              <CustomTableCell >W</CustomTableCell>
-              <CustomTableCell >Th</CustomTableCell>
-              <CustomTableCell >F</CustomTableCell>
-              <CustomTableCell >No. of Hrs</CustomTableCell>
-              <CustomTableCell >Total Amt</CustomTableCell>
-              </>
-          }
-
-          <CustomTableCell >Net Earnings</CustomTableCell>
-          <CustomTableCell >SSS</CustomTableCell>
-          <CustomTableCell >PhilHealth</CustomTableCell>
-        </TableRow>
-      </TableHead>
-
-
-        <TableBody>
-          {rows.map(row => (
-            <TableRow className={classes.row} key={row.id}>
-              <CustomTableCell component="td" scope="row">
-                {row.name}
+      <Paper className={classes.root}>
+        <Table className={classes.table}>
+          {overtime && (
+            <React.Fragment>
+              <TableHead>
+                <TableRow>
+                  <CustomTableCell
+                    colSpan={2}
+                    className={classes.overtimeBox}
+                  />
+                  <CustomTableCell
+                    colSpan={9}
+                    align="center"
+                    className={classes.overtimeBox}
+                  >
+                    Ordinary
+                  </CustomTableCell>
+                  <CustomTableCell
+                    colSpan={9}
+                    align="center"
+                    className={classes.overtimeBox}
+                  >
+                    Overtime
+                  </CustomTableCell>
+                  <CustomTableCell
+                    colSpan={3}
+                    className={classes.overtimeBox}
+                  />
+                </TableRow>
+              </TableHead>
+            </React.Fragment>
+          )}
+          <TableHead>
+            <TableRow>
+              <CustomTableCell>
+                Employee
+                <div style={{ display: "inline-block" }}>
+                  <Fab color="secondary" aria-label="Add" size="small">
+                    <AddIcon />
+                  </Fab>
+                </div>
               </CustomTableCell>
-              <CustomTableCell >{row.calories}</CustomTableCell>
-              <CustomTableCell >{row.protein}</CustomTableCell>
-              <CustomTableCell >
-              <TextField
-                id="standard-dense"
-                className={classNames(classes.textField, classes.dense)}
-                margin="dense"
-                inputProps={{step: 300, className : classNames(classes.textField)}}
-              />
-              </CustomTableCell>
-              <CustomTableCell >
-              <TextField
-                id="standard-dense"
-                className={classNames(classes.textField, classes.dense)}
-                margin="dense"
-              />
-              </CustomTableCell>
-              <CustomTableCell >
-              <TextField
-                id="standard-dense"
-                className={classNames(classes.textField, classes.dense)}
-                margin="dense"
-              />
-              </CustomTableCell>
-              <CustomTableCell >
-              <TextField
-                id="standard-dense"
-                className={classNames(classes.textField, classes.dense)}
-                margin="dense"
-              />
-              </CustomTableCell>
-              <CustomTableCell >
-              <TextField
-                id="standard-dense"
-                className={classNames(classes.textField, classes.dense)}
-                margin="dense"
-              />
-              </CustomTableCell>
-              <CustomTableCell >{row.carbs}</CustomTableCell>
-              <CustomTableCell >{row.carbs}</CustomTableCell>
+              <CustomTableCell>Worker Description</CustomTableCell>
 
-              { overtime && <>
-                <CustomTableCell >{row.protein}</CustomTableCell>
-                <CustomTableCell >
-                <TextField
-                  id="standard-dense"
-                  className={classNames(classes.textField, classes.dense)}
-                  margin="dense"
-                />
-                </CustomTableCell>
-                <CustomTableCell >
-                <TextField
-                  id="standard-dense"
-                  className={classNames(classes.textField, classes.dense)}
-                  margin="dense"
-                />
-                </CustomTableCell>
-                <CustomTableCell >
-                <TextField
-                  id="standard-dense"
-                  className={classNames(classes.textField, classes.dense)}
-                  margin="dense"
-                />
-                </CustomTableCell>
-                <CustomTableCell >
-                <TextField
-                  id="standard-dense"
-                  className={classNames(classes.textField, classes.dense)}
-                  margin="dense"
-                />
-                </CustomTableCell>
-                <CustomTableCell >
-                <TextField
-                  id="standard-dense"
-                  className={classNames(classes.textField, classes.dense)}
-                  margin="dense"
-                />
-                </CustomTableCell>
-                <CustomTableCell >{row.carbs}</CustomTableCell>
-                <CustomTableCell >{row.protein}</CustomTableCell>
-                </>
-              }
-
-              <CustomTableCell >{row.carbs}</CustomTableCell>
-              <CustomTableCell >{row.carbs}</CustomTableCell>
-              <CustomTableCell >{row.carbs}</CustomTableCell>
+              <CustomTableCell>Rate</CustomTableCell>
+              <CustomTableCell>M</CustomTableCell>
+              <CustomTableCell>T</CustomTableCell>
+              <CustomTableCell>W</CustomTableCell>
+              <CustomTableCell>Th</CustomTableCell>
+              <CustomTableCell>F</CustomTableCell>
+              <CustomTableCell>S</CustomTableCell>
+              <CustomTableCell>No. of Hrs</CustomTableCell>
+              <CustomTableCell>Total Amt</CustomTableCell>
+              {overtime && otTableHeaderCol()}
+              <CustomTableCell>Net Earnings</CustomTableCell>
+              <CustomTableCell>SSS</CustomTableCell>
+              <CustomTableCell>PhilHealth</CustomTableCell>
             </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-    </Paper>
+          </TableHead>
+
+          <TableBody>
+            {state.map(row => (
+              <TableRow
+                className={classNames(classes.row, classes.tableRowHover)}
+                key={row.employeeId}
+              >
+                <TableCell component="td" scope="row">
+                  {row.fullname}
+                </TableCell>
+                <TableCell>{row.jobDescription}</TableCell>
+                <TableCell className={classes.tdCell}>{row.rate}</TableCell>
+                <TableCell>
+                  <TextField
+                    id="standard-dense"
+                    className={classNames(classes.dayTextField, classes.dense)}
+                    margin="dense"
+                    onKeyUp={onKeyUpAmount}
+                    inputProps={{
+                      maxLength: 2,
+                      onKeyUp: onKeyUpAmount,
+                      className: classNames(classes.dayTextField)
+                    }}
+                  />
+                </TableCell>
+                <TableCell>
+                  <TextField
+                    id="standard-dense"
+                    className={classNames(classes.dayTextField, classes.dense)}
+                    margin="dense"
+                    inputProps={{
+                      maxLength: 2,
+                      onKeyUp: onKeyUpAmount,
+                      className: classNames(classes.dayTextField)
+                    }}
+                  />
+                </TableCell>
+                <TableCell>
+                  <TextField
+                    id="standard-dense"
+                    className={classNames(classes.dayTextField, classes.dense)}
+                    margin="dense"
+                    inputProps={{
+                      maxLength: 2,
+                      onKeyUp: onKeyUpAmount,
+                      className: classNames(classes.dayTextField)
+                    }}
+                  />
+                </TableCell>
+                <TableCell>
+                  <TextField
+                    id="standard-dense"
+                    className={classNames(classes.dayTextField, classes.dense)}
+                    margin="dense"
+                    inputProps={{
+                      maxLength: 2,
+                      onKeyUp: onKeyUpAmount,
+                      className: classNames(classes.dayTextField)
+                    }}
+                  />
+                </TableCell>
+                <TableCell>
+                  <TextField
+                    id="standard-dense"
+                    className={classNames(classes.dayTextField, classes.dense)}
+                    margin="dense"
+                    inputProps={{
+                      maxLength: 2,
+                      onKeyUp: onKeyUpAmount,
+                      className: classNames(classes.dayTextField)
+                    }}
+                  />
+                </TableCell>
+                <TableCell>
+                  <TextField
+                    id="standard-dense"
+                    className={classNames(classes.dayTextField, classes.dense)}
+                    margin="dense"
+                    inputProps={{
+                      maxLength: 2,
+                      onKeyUp: onKeyUpAmount,
+                      className: classNames(classes.dayTextField)
+                    }}
+                  />
+                </TableCell>
+                <TableCell className={classes.tdCell}>{row.carbs}</TableCell>
+                <TableCell className={classes.tdCell}>{row.carbs}</TableCell>
+
+                {overtime && otTableRowCol(props, row)}
+
+                <TableCell className={classes.tdCell}>{row.carbs}</TableCell>
+                <TableCell className={classes.tdCell}>{row.carbs}</TableCell>
+                <TableCell className={classes.tdCell}>{row.carbs}</TableCell>
+              </TableRow>
+            ))}
+          </TableBody>
+        </Table>
+      </Paper>
     </Paper>
   );
 }
 
 AtzKarlTable.propTypes = {
-  classes: PropTypes.object.isRequired,styles
+  classes: PropTypes.object.isRequired
 };
 
-export default withStyles(styles)(AtzKarlTable);
+function otTableHeaderCol() {
+  return (
+    <React.Fragment>
+      <CustomTableCell>Rate</CustomTableCell>
+      <CustomTableCell>M</CustomTableCell>
+      <CustomTableCell>T</CustomTableCell>
+      <CustomTableCell>W</CustomTableCell>
+      <CustomTableCell>Th</CustomTableCell>
+      <CustomTableCell>F</CustomTableCell>
+      <CustomTableCell>S</CustomTableCell>
+      <CustomTableCell>No. of Hrs</CustomTableCell>
+      <CustomTableCell>Total Amt</CustomTableCell>
+    </React.Fragment>
+  );
+}
+function otTableRowCol(props, row) {
+  const { classes } = props;
+  return (
+    <React.Fragment>
+      <TableCell className={classes.tdCell}>{row.otRate}</TableCell>
+      <TableCell>
+        <TextField
+          id="standard-dense"
+          className={classNames(classes.dayTextField, classes.dense)}
+          margin="dense"
+          inputProps={{
+            maxLength: 2,
+            onKeyUp: onKeyUpAmount,
+            className: classNames(classes.dayTextField)
+          }}
+        />
+      </TableCell>
+      <TableCell>
+        <TextField
+          id="standard-dense"
+          className={classNames(classes.dayTextField, classes.dense)}
+          margin="dense"
+          inputProps={{
+            maxLength: 2,
+            onKeyUp: onKeyUpAmount,
+            className: classNames(classes.dayTextField)
+          }}
+        />
+      </TableCell>
+      <TableCell>
+        <TextField
+          id="standard-dense"
+          className={classNames(classes.dayTextField, classes.dense)}
+          margin="dense"
+          inputProps={{
+            maxLength: 2,
+            onKeyUp: onKeyUpAmount,
+            className: classNames(classes.dayTextField)
+          }}
+        />
+      </TableCell>
+      <TableCell>
+        <TextField
+          id="standard-dense"
+          className={classNames(classes.dayTextField, classes.dense)}
+          margin="dense"
+          inputProps={{
+            maxLength: 2,
+            onKeyUp: onKeyUpAmount,
+            className: classNames(classes.dayTextField)
+          }}
+        />
+      </TableCell>
+      <TableCell>
+        <TextField
+          id="standard-dense"
+          className={classNames(classes.dayTextField, classes.dense)}
+          margin="dense"
+          inputProps={{
+            maxLength: 2,
+            onKeyUp: onKeyUpAmount,
+            className: classNames(classes.dayTextField)
+          }}
+        />
+      </TableCell>
+      <TableCell>
+        <TextField
+          id="standard-dense"
+          className={classNames(classes.dayTextField, classes.dense)}
+          margin="dense"
+          inputProps={{
+            maxLength: 2,
+            onKeyUp: onKeyUpAmount,
+            className: classNames(classes.dayTextField)
+          }}
+        />
+      </TableCell>
+      <TableCell className={classes.tdCell}>{row.carbs}</TableCell>
+      <TableCell className={classes.tdCell}>{row.protein}</TableCell>
+    </React.Fragment>
+  );
+}
+
+export default withStyles(stylez, { withTheme: true })(AtzKarlTable);

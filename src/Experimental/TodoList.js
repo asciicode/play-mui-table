@@ -8,11 +8,16 @@ function ItemRenderer({ prop1 }){
   //   console.log(prop1)
   //   return todos.length + prop1
   // }
-
   console.log(prop1)
+  let bounds = null
+  const getBounds = (value) =>{
+    if (bounds) return
+    bounds = value.getBoundingClientRect()
+    console.log(bounds)
+  }
   return (
     <>
-      <div>ascii {prop1}</div>
+      <div ref={getBounds}>ascii {prop1}</div>
     </>
   )
 }

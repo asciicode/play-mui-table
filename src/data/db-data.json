@@ -1,0 +1,44 @@
+
+
+employee: {
+  id: 0
+  lastname: '',
+  firstname: '',
+  job_description: '',
+  rate: 0,
+  otmultiplier: 0,
+  sss: 0,
+  philhealth: 0  
+}
+
+payroll: {
+  id: 0
+  payroll_number: 0,
+  payroll_status: '',
+  overtime: false
+}
+
+payroll_employee: {
+  id: 0
+  payroll_id: 0
+  employee_id: 0
+  employee: {}
+  employee_rate: 0,
+  employee_otmultiplier: 0
+  sss: '',
+  philhealth: ''
+}
+
+payroll_employee_transaction: {
+  payroll_employee: {}
+  pay_element: {}
+  qty: 0 
+  rate: 0
+m
+}
+
+pay_element: {
+  type: payment, /* payment or deduction */
+  value: ???
+}
+
