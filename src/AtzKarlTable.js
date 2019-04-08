@@ -18,11 +18,13 @@ import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
 import { onKeyUpAmount } from "./utils/handy";
 import SearchAddEmployees from "./SearchAddEmployees";
-import Fab from "@material-ui/core/Fab";
-import AddIcon from "@material-ui/icons/Add";
+import AddNewDialog from "./AddNewDialog";
+import Button from "@material-ui/core/Button";
+import DialogActions from "@material-ui/core/DialogActions";
 import { usePayrollEmployees } from "./utils/hooks";
-// import { AppContext } from ".";
 import { generatePayrollRows } from "./data/payroll";
+import MonetizationOn from "@material-ui/icons/MonetizationOn";
+import Gavel from "@material-ui/icons/Gavel";
 
 const CustomTableCell = withStyles(theme => ({
   head: {
@@ -146,21 +148,40 @@ function AtzKarlTable(props) {
   };
   const handleDeleteClick = id => {
     const ndx = state.findIndex(rec => rec.employeeId === id);
-    let newSelectEmp = [...selectEmployees, state[ndx]];
-    setSelectEmployees(
-      newSelectEmp.sort((a, b) => {
-        var nameA = a.fullname.toLowerCase(),
-          nameB = b.fullname.toLowerCase();
-        if (nameA < nameB)
-          //sort string ascending
-          return -1;
-        if (nameA > nameB) return 1;
-        return 0; //default return value (no sorting)
-      })
-    );
-
-    // setSelectEmployees()
+    // TODO sorting?
+    // let newSelectEmp = [...selectEmployees, state[ndx]];
+    // newSelectEmp.sort((a, b) => {
+    //   var nameA = a.fullname.toLowerCase(),
+    //     nameB = b.fullname.toLowerCase();
+    //   if (nameA < nameB)
+    //     //sort string ascending
+    //     return -1;
+    //   if (nameA > nameB) return 1;
+    //   return 0; //default return value (no sorting)
+    // }
+    setSelectEmployees([...selectEmployees, state[ndx]]);
     removeById(id);
+  };
+  const handleAddEmployee = form => {
+    const rec = prepareForm(form);
+    console.log(rec);
+    if (form.action === "addToPayroll") add(rec);
+    else setSelectEmployees([...selectEmployees, rec]);
+  };
+
+  const prepareForm = form => {
+    const { lastname, firstname, rate, otMultiplier, sss, philHealth } = form;
+    let r = parseFloat(rate).toFixed(2);
+    const rec = {
+      employeeId: Math.random(10),
+      fullname: firstname + " " + lastname,
+      jobDescription: "Bundling",
+      rate: r,
+      otRate: (r * parseFloat(otMultiplier)).toFixed(2),
+      sss: parseFloat(sss).toFixed(2),
+      philHealth: parseFloat(philHealth).toFixed(2)
+    };
+    return rec;
   };
   // function handleClick(event) {
   //   setAnchorEl(event.currentTarget);
@@ -228,9 +249,15 @@ function AtzKarlTable(props) {
               <CustomTableCell>
                 Employee
                 <div style={{ display: "inline-block" }}>
-                  <Fab color="secondary" aria-label="Add" size="small">
+                  <AddNewDialog onSubmit={handleAddEmployee} />
+                  {/* <Fab
+                    color="secondary"
+                    aria-label="Add"
+                    size="small"
+                    onClick={() => handleAddEmployee()}
+                  >
                     <AddIcon />
-                  </Fab>
+                  </Fab> */}
                 </div>
               </CustomTableCell>
               <CustomTableCell>Worker Description</CustomTableCell>
@@ -384,6 +411,28 @@ function AtzKarlTable(props) {
               ))}
           </TableBody>
         </Table>
+        <DialogActions>
+          <Button
+            variant="contained"
+            color="secondary"
+            className={classes.button}
+            size="small"
+            onClick={() => alert("to be calculated")}
+          >
+            <MonetizationOn />
+            Calculate
+          </Button>
+          <Button
+            variant="contained"
+            color="primary"
+            className={classes.button}
+            size="small"
+            onClick={() => alert("to be confirmed")}
+          >
+            <Gavel />
+            Confirm
+          </Button>
+        </DialogActions>
       </Paper>
     </Paper>
   );

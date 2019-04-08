@@ -11,7 +11,7 @@ import SearchAddEmployees from "./SearchAddEmployees";
 // import CssBaseline from '@material-ui/core/CssBaseline';
 // <CssBaseline />
 // import TodoList from './Experimental/TodoList';
-import { generatePayrollRows } from "./data/payroll";
+// import { generatePayrollRows } from "./data/payroll";
 
 const theme = createMuiTheme({
   typography: {
@@ -63,11 +63,9 @@ const theme = createMuiTheme({
 // );
 // ReactDOM.render(<TodoList />, document.getElementById('root'));
 ReactDOM.render(
-
-    <MuiThemeProvider theme={theme}>
-      <AtzKarlTable />
-    </MuiThemeProvider>
-  ,
+  <MuiThemeProvider theme={theme}>
+    <AtzKarlTable />
+  </MuiThemeProvider>,
   document.getElementById("root")
 );
 

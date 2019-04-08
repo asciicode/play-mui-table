@@ -10,8 +10,8 @@ export const payrollRowEmpty = {
   qtyTh: 0,
   qtyF: 0,
   qtyS: 0,
-  qtyTotal: 0,
-  totalAmt: 0,
+  qtyTotal: "",
+  totalAmt: "",
 
   otRate: 0,
   otQtyM: 0,
@@ -20,12 +20,12 @@ export const payrollRowEmpty = {
   otQtyTh: 0,
   otQtyF: 0,
   otQtyS: 0,
-  otQtyTotal: 0,
-  otTotalAmt: 0,
+  otQtyTotal: "",
+  otTotalAmt: "",
 
-  netEarnings: 0,
-  sss: 0,
-  philHealth: 0
+  netEarnings: "",
+  sss: 168.25,
+  philHealth: (25).toFixed(2)
 };
 
 const employees = [
