@@ -14,10 +14,8 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
 import TextField from "@material-ui/core/TextField";
 import classNames from "classnames";
-import InputBase from "@material-ui/core/InputBase";
-import Button from "@material-ui/core/Button";
-import Menu from "@material-ui/core/Menu";
-import MenuItem from "@material-ui/core/MenuItem";
+import IconButton from "@material-ui/core/IconButton";
+import DeleteIcon from "@material-ui/icons/Delete";
 import { onKeyUpAmount } from "./utils/handy";
 import SearchAddEmployees from "./SearchAddEmployees";
 import Fab from "@material-ui/core/Fab";
@@ -111,7 +109,7 @@ function AtzKarlTable(props) {
   const [overtime, setOvertime] = React.useState(false);
   // const [anchorEl, setAnchorEl] = React.useState(null);
   const [selectEmployees, setSelectEmployees] = React.useState();
-  const [state, add, addAll] = usePayrollEmployees();
+  const [state, add, removeById] = usePayrollEmployees();
   const { classes } = props;
   // console.log(state);
 
@@ -120,9 +118,9 @@ function AtzKarlTable(props) {
     // const { tableEmployees, remainingEmployees } = ;
     // console.log(tableEmployees);
     // const { tableEmployees, remainingEmployees } = props;
-    const { payrollEmployees, remainingEmployees } = generatePayrollRows()
-    addAll(payrollEmployees)
-    setSelectEmployees(remainingEmployees)
+    const { payrollEmployees, remainingEmployees } = generatePayrollRows();
+    add(payrollEmployees);
+    setSelectEmployees(remainingEmployees);
     return () => {
       console.log("useEffect here unmounting...");
     };
@@ -140,11 +138,29 @@ function AtzKarlTable(props) {
         selectEmployees.splice(ndx, 1);
       });
       // console.log(selectEmployees);
-      addAll(addEmps);
+      add(addEmps);
     }
   };
   const handleOvertimeToggle = () => {
     setOvertime(!overtime);
+  };
+  const handleDeleteClick = id => {
+    const ndx = state.findIndex(rec => rec.employeeId === id);
+    let newSelectEmp = [...selectEmployees, state[ndx]];
+    setSelectEmployees(
+      newSelectEmp.sort((a, b) => {
+        var nameA = a.fullname.toLowerCase(),
+          nameB = b.fullname.toLowerCase();
+        if (nameA < nameB)
+          //sort string ascending
+          return -1;
+        if (nameA > nameB) return 1;
+        return 0; //default return value (no sorting)
+      })
+    );
+
+    // setSelectEmployees()
+    removeById(id);
   };
   // function handleClick(event) {
   //   setAnchorEl(event.currentTarget);
@@ -200,7 +216,7 @@ function AtzKarlTable(props) {
                     Overtime
                   </CustomTableCell>
                   <CustomTableCell
-                    colSpan={3}
+                    colSpan={4}
                     className={classes.overtimeBox}
                   />
                 </TableRow>
@@ -232,103 +248,140 @@ function AtzKarlTable(props) {
               <CustomTableCell>Net Earnings</CustomTableCell>
               <CustomTableCell>SSS</CustomTableCell>
               <CustomTableCell>PhilHealth</CustomTableCell>
+              <CustomTableCell />
             </TableRow>
           </TableHead>
 
           <TableBody>
-            {Object.entries(state).length > 0 && state.map(row => (
-              <TableRow
-                className={classNames(classes.row, classes.tableRowHover)}
-                key={row.employeeId}
-              >
-                <TableCell component="td" scope="row">
-                  {row.fullname}
-                </TableCell>
-                <TableCell>{row.jobDescription}</TableCell>
-                <TableCell className={classes.tdCell}>{row.rate}</TableCell>
-                <TableCell>
-                  <TextField
-                    id="standard-dense"
-                    className={classNames(classes.dayTextField, classes.dense)}
-                    margin="dense"
-                    onKeyUp={onKeyUpAmount}
-                    inputProps={{
-                      maxLength: 2,
-                      onKeyUp: onKeyUpAmount,
-                      className: classNames(classes.dayTextField)
-                    }}
-                  />
-                </TableCell>
-                <TableCell>
-                  <TextField
-                    id="standard-dense"
-                    className={classNames(classes.dayTextField, classes.dense)}
-                    margin="dense"
-                    inputProps={{
-                      maxLength: 2,
-                      onKeyUp: onKeyUpAmount,
-                      className: classNames(classes.dayTextField)
-                    }}
-                  />
-                </TableCell>
-                <TableCell>
-                  <TextField
-                    id="standard-dense"
-                    className={classNames(classes.dayTextField, classes.dense)}
-                    margin="dense"
-                    inputProps={{
-                      maxLength: 2,
-                      onKeyUp: onKeyUpAmount,
-                      className: classNames(classes.dayTextField)
-                    }}
-                  />
-                </TableCell>
-                <TableCell>
-                  <TextField
-                    id="standard-dense"
-                    className={classNames(classes.dayTextField, classes.dense)}
-                    margin="dense"
-                    inputProps={{
-                      maxLength: 2,
-                      onKeyUp: onKeyUpAmount,
-                      className: classNames(classes.dayTextField)
-                    }}
-                  />
-                </TableCell>
-                <TableCell>
-                  <TextField
-                    id="standard-dense"
-                    className={classNames(classes.dayTextField, classes.dense)}
-                    margin="dense"
-                    inputProps={{
-                      maxLength: 2,
-                      onKeyUp: onKeyUpAmount,
-                      className: classNames(classes.dayTextField)
-                    }}
-                  />
-                </TableCell>
-                <TableCell>
-                  <TextField
-                    id="standard-dense"
-                    className={classNames(classes.dayTextField, classes.dense)}
-                    margin="dense"
-                    inputProps={{
-                      maxLength: 2,
-                      onKeyUp: onKeyUpAmount,
-                      className: classNames(classes.dayTextField)
-                    }}
-                  />
-                </TableCell>
-                <TableCell className={classes.tdCell}>{row.carbs}</TableCell>
-                <TableCell className={classes.tdCell}>{row.carbs}</TableCell>
+            {Object.entries(state).length > 0 &&
+              state.map(row => (
+                <TableRow
+                  className={classNames(classes.row, classes.tableRowHover)}
+                  key={row.employeeId}
+                >
+                  <TableCell component="td" scope="row">
+                    {row.fullname}
+                  </TableCell>
+                  <TableCell>{row.jobDescription}</TableCell>
+                  <TableCell className={classes.tdCell}>{row.rate}</TableCell>
+                  <TableCell>
+                    <TextField
+                      id="standard-dense"
+                      className={classNames(
+                        classes.dayTextField,
+                        classes.dense
+                      )}
+                      margin="dense"
+                      onKeyUp={onKeyUpAmount}
+                      inputProps={{
+                        maxLength: 2,
+                        onKeyUp: onKeyUpAmount,
+                        className: classNames(classes.dayTextField)
+                      }}
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <TextField
+                      id="standard-dense"
+                      className={classNames(
+                        classes.dayTextField,
+                        classes.dense
+                      )}
+                      margin="dense"
+                      inputProps={{
+                        maxLength: 2,
+                        onKeyUp: onKeyUpAmount,
+                        className: classNames(classes.dayTextField)
+                      }}
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <TextField
+                      id="standard-dense"
+                      className={classNames(
+                        classes.dayTextField,
+                        classes.dense
+                      )}
+                      margin="dense"
+                      inputProps={{
+                        maxLength: 2,
+                        onKeyUp: onKeyUpAmount,
+                        className: classNames(classes.dayTextField)
+                      }}
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <TextField
+                      id="standard-dense"
+                      className={classNames(
+                        classes.dayTextField,
+                        classes.dense
+                      )}
+                      margin="dense"
+                      inputProps={{
+                        maxLength: 2,
+                        onKeyUp: onKeyUpAmount,
+                        className: classNames(classes.dayTextField)
+                      }}
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <TextField
+                      id="standard-dense"
+                      className={classNames(
+                        classes.dayTextField,
+                        classes.dense
+                      )}
+                      margin="dense"
+                      inputProps={{
+                        maxLength: 2,
+                        onKeyUp: onKeyUpAmount,
+                        className: classNames(classes.dayTextField)
+                      }}
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <TextField
+                      id="standard-dense"
+                      className={classNames(
+                        classes.dayTextField,
+                        classes.dense
+                      )}
+                      margin="dense"
+                      inputProps={{
+                        maxLength: 2,
+                        onKeyUp: onKeyUpAmount,
+                        className: classNames(classes.dayTextField)
+                      }}
+                    />
+                  </TableCell>
+                  <TableCell className={classes.tdCell}>
+                    {row.qtyTotal}
+                  </TableCell>
+                  <TableCell className={classes.tdCell}>
+                    {row.totalAmt}
+                  </TableCell>
 
-                {overtime && otTableRowCol(props, row)}
+                  {overtime && otTableRowCol(props, row)}
 
-                <TableCell className={classes.tdCell}>{row.carbs}</TableCell>
-                <TableCell className={classes.tdCell}>{row.carbs}</TableCell>
-                <TableCell className={classes.tdCell}>{row.carbs}</TableCell>
-              </TableRow>
-            ))}
+                  <TableCell className={classes.tdCell}>
+                    {row.netEarnings}
+                  </TableCell>
+                  <TableCell className={classes.tdCell}>{row.sss}</TableCell>
+                  <TableCell className={classes.tdCell}>
+                    {row.philHealth}
+                  </TableCell>
+                  <TableCell align="center">
+                    <IconButton
+                      className={classes.button}
+                      aria-label="Delete"
+                      onClick={() => handleDeleteClick(row.employeeId)}
+                    >
+                      <DeleteIcon />
+                    </IconButton>
+                  </TableCell>
+                </TableRow>
+              ))}
           </TableBody>
         </Table>
       </Paper>
@@ -432,8 +485,8 @@ function otTableRowCol(props, row) {
           }}
         />
       </TableCell>
-      <TableCell className={classes.tdCell}>{row.carbs}</TableCell>
-      <TableCell className={classes.tdCell}>{row.protein}</TableCell>
+      <TableCell className={classes.tdCell}>{row.otQtyTotal}</TableCell>
+      <TableCell className={classes.tdCell}>{row.otTotalAmt}</TableCell>
     </React.Fragment>
   );
 }

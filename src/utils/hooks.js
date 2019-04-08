@@ -11,6 +11,11 @@ function payrollEmployeesReducer(state, action) {
       // console.log(state, action.payload);
       return [...state, ...action.payload];
     }
+    case payrollActionTypes.DELETE: {
+      // console.log(state, action.payload);
+      
+      return state.filter(rec => rec.employeeId !== action.payload.id);
+    }
     default:
       throw new Error(`Unhandled type ${action.type}`);
   }
@@ -18,7 +23,8 @@ function payrollEmployeesReducer(state, action) {
 
 export const payrollActionTypes = {
   ADD: "add",
-  ADD_ALL: "add_all"
+  ADD_ALL: "add_all",
+  DELETE: "delete"
 };
 
 export function usePayrollEmployees(initialState = []) {
@@ -27,11 +33,16 @@ export function usePayrollEmployees(initialState = []) {
     initialState
   );
 
-  const add = payrollEmployee =>
-    dispatch({ type: payrollActionTypes.ADD, payload: payrollEmployee });
-  const addAll = payrollEmployees =>
-    dispatch({ type: payrollActionTypes.ADD_ALL, payload: payrollEmployees });
-  return [state, add, addAll];
+  const add = payrollEmployee => {
+    if (Array.isArray(payrollEmployee))
+      dispatch({ type: payrollActionTypes.ADD_ALL, payload: payrollEmployee });
+    else dispatch({ type: payrollActionTypes.ADD, payload: payrollEmployee });
+  };
+
+  const removeById = id => {
+    dispatch({ type: payrollActionTypes.DELETE, payload: { id }});
+  }
+  return [state, add, removeById];
 }
 
 // function employeeReducer(state, action) {}
