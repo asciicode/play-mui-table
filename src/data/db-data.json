@@ -6,7 +6,7 @@ employee: {
   firstname: '',
   job_description: '',
   rate: 0,
-  otmultiplier: 0,
+  otmultiplier: 0, /* ??? maybe to elements in the future */
   sss: 0,
   philhealth: 0  
 }
@@ -20,9 +20,8 @@ payroll: {
 
 payroll_employee: {
   id: 0
-  payroll_id: 0
-  employee_id: 0
-  employee: {}
+  payroll_id: many to 1
+  employee_id: many to 1
   employee_rate: 0,
   employee_otmultiplier: 0
   sss: '',
@@ -30,15 +29,36 @@ payroll_employee: {
 }
 
 payroll_employee_transaction: {
-  payroll_employee: {}
-  pay_element: {}
+  payroll_employee: many to 1
+  pay_element: many to 1
   qty: 0 
   rate: 0
-m
+
 }
 
+
+
 pay_element: {
-  type: payment, /* payment or deduction */
+  code: '',
+  description: '', 
+  type: '', /* ot or ordinary, remaining pay  */
+  group: pay_element_group_id, /* payment or deduction */
+  multiplier: 1.0,
+  calculation_rule: ???,
+  rate: ???,
   value: ???
 }
 
+
+/* FUTURE USE */
+pay_element_group: {
+  /* payment or deduction */
+}
+
+payment_element: {
+  payment_type : ''/* ot or ordinary  */
+}
+
+deduction_element: {
+  deduction_type: '' /* subsidy[sss/philhealth], remaining pay */
+}
