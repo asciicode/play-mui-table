@@ -39,16 +39,49 @@ const useStyles = theme => ({
 });
 
 const EmployeeForm = props => {
-  const [form, setForm] = React.useState({});
+  const [form, setForm] = React.useState({
+    lastname: "",
+    firstname: "",
+    rate: "",
+    otMultiplier: "",
+    sss: "",
+    philHealth: ""
+  });
   const { classes } = props;
   // console.log(form);
 
   const handleChange = event => {
-    // console.log(event.target.value, event.target.id);
     setForm({
       ...form,
       [event.target.id]: event.target.value
     });
+  };
+
+  const handleAmountChange = event => {
+    // console.log(
+    //   "event :",
+    //   !isNaN(parseFloat(event.target.value, 10)),
+    //   (parseFloat(event.target.value, 10) + "").length,
+    //   event.target.value.length
+    // );
+    if (
+      !isNaN(parseFloat(event.target.value, 10)) ||
+      event.target.value === ""
+    ) {
+      setForm({
+        ...form,
+        [event.target.id]: event.target.value
+      });
+    }
+  };
+  const handleAmountBlur = event => {
+    // console.log(parseFloat(event.target.value, 10));
+    if (!isNaN(parseFloat(event.target.value, 10))) {
+      setForm({
+        ...form,
+        [event.target.id]: parseFloat(event.target.value, 10).toFixed(2)
+      });
+    }
   };
   const handleSubmit = action => {
     console.log(action);
@@ -66,6 +99,7 @@ const EmployeeForm = props => {
           label="Lastname"
           margin="normal"
           fullWidth
+          value={form.lastname}
           onChange={handleChange}
         />
         <TextField
@@ -73,6 +107,7 @@ const EmployeeForm = props => {
           label="Firstname(s)"
           margin="normal"
           fullWidth
+          value={form.firstname}
           onChange={handleChange}
         />
         <TextField
@@ -80,32 +115,36 @@ const EmployeeForm = props => {
           label="Rate"
           margin="normal"
           fullWidth
-          onKeyUp={onKeyUpAmount}
-          onChange={handleChange}
+          value={form.rate}
+          onChange={handleAmountChange}
+          onBlur={handleAmountBlur}
         />
         <TextField
           id="otMultiplier"
           label="OT multiplier"
           margin="normal"
           fullWidth
-          onKeyUp={onKeyUpAmount}
-          onChange={handleChange}
+          value={form.otMultiplier}
+          onChange={handleAmountChange}
+          onBlur={handleAmountBlur}
         />
         <TextField
           id="sss"
           label="SSS"
           margin="normal"
           fullWidth
-          onKeyUp={onKeyUpAmount}
-          onChange={handleChange}
+          value={form.sss}
+          onChange={handleAmountChange}
+          onBlur={handleAmountBlur}
         />
         <TextField
           id="philHealth"
           label="PhilHealth"
           margin="normal"
           fullWidth
-          onKeyUp={onKeyUpAmount}
-          onChange={handleChange}
+          value={form.philHealth}
+          onChange={handleAmountChange}
+          onBlur={handleAmountBlur}
         />
 
         <DialogActions>

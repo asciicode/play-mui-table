@@ -42,8 +42,7 @@ function payrollEmployeesReducer(state, action) {
   }
 }
 
-const computeQtyTotal = (overtime, newRec) => {
-  // const { overtime, newRec } = payload
+const computeQtyTotal = newRec => {
   const qtyTotal =
     (!isNaN(parseInt(newRec.qtyM, 10)) ? parseInt(newRec.qtyM, 10) : 0) +
     (!isNaN(parseInt(newRec.qtyT, 10)) ? parseInt(newRec.qtyT, 10) : 0) +
@@ -71,10 +70,7 @@ export const payrollActionTypes = {
 };
 
 function calculate(action, newRec) {
-  const [qtyTotal, otQtyTotal] = computeQtyTotal(
-    action.payload.overtime,
-    newRec
-  );
+  const [qtyTotal, otQtyTotal] = computeQtyTotal(newRec);
   const totalAmt = newRec.rate * qtyTotal;
   const otTotalAmt = newRec.otRate * otQtyTotal;
   const netEarnings = action.payload.overtime

@@ -4,8 +4,7 @@ import {
   Dialog as MuiDialog,
   DialogContent,
   DialogContentText,
-  DialogTitle,
-  Paper
+  DialogTitle
 } from "@material-ui/core";
 import { Add } from "@material-ui/icons";
 import EmployeeForm from "./EmployeeForm";
