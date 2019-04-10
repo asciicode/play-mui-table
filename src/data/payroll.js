@@ -4,12 +4,12 @@ export const payrollRowEmpty = {
   jobDescription: "",
 
   rate: 0,
-  qtyM: 0,
-  qtyT: 0,
-  qtyW: 0,
-  qtyTh: 0,
-  qtyF: 0,
-  qtyS: 0,
+  qtyM: '',
+  qtyT: '',
+  qtyW: '',
+  qtyTh: '',
+  qtyF: '',
+  qtyS: '',
   qtyTotal: "",
   totalAmt: "",
 
@@ -45,7 +45,7 @@ const employees = [
   "Holley Pagel"
 ];
 
-const sliceIndex = 10;
+const sliceIndex = 4;
 // export
 // export const tableEmployees = [];
 

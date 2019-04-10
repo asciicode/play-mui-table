@@ -7,8 +7,6 @@ import TableCell from "@material-ui/core/TableCell";
 import TableHead from "@material-ui/core/TableHead";
 import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
-import Icon from "@material-ui/core/Icon";
-import red from "@material-ui/core/colors/red";
 import FormGroup from "@material-ui/core/FormGroup";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Checkbox from "@material-ui/core/Checkbox";
@@ -23,7 +21,6 @@ import Button from "@material-ui/core/Button";
 import DialogActions from "@material-ui/core/DialogActions";
 import { usePayrollEmployees } from "./utils/hooks";
 import { generatePayrollRows } from "./data/payroll";
-import MonetizationOn from "@material-ui/icons/MonetizationOn";
 import Gavel from "@material-ui/icons/Gavel";
 
 const CustomTableCell = withStyles(theme => ({
@@ -111,7 +108,7 @@ function AtzKarlTable(props) {
   const [overtime, setOvertime] = React.useState(false);
   // const [anchorEl, setAnchorEl] = React.useState(null);
   const [selectEmployees, setSelectEmployees] = React.useState();
-  const [state, add, removeById] = usePayrollEmployees();
+  const [state, add, removeById, changeDayProp] = usePayrollEmployees();
   const { classes } = props;
   // console.log(state);
 
@@ -147,7 +144,10 @@ function AtzKarlTable(props) {
     setOvertime(!overtime);
   };
   const handleDeleteClick = id => {
+    // console.log(tableRef.value);
     const ndx = state.findIndex(rec => rec.employeeId === id);
+    setSelectEmployees([...selectEmployees, state[ndx]]);
+    removeById(id);
     // TODO sorting?
     // let newSelectEmp = [...selectEmployees, state[ndx]];
     // newSelectEmp.sort((a, b) => {
@@ -159,8 +159,6 @@ function AtzKarlTable(props) {
     //   if (nameA > nameB) return 1;
     //   return 0; //default return value (no sorting)
     // }
-    setSelectEmployees([...selectEmployees, state[ndx]]);
-    removeById(id);
   };
   const handleAddEmployee = form => {
     const rec = prepareForm(form);
@@ -183,6 +181,12 @@ function AtzKarlTable(props) {
     };
     return rec;
   };
+  const handleDayChange = (e, employeeId, name) => {
+    // console.log('e', e.target.value, employeeId, name)
+    if (e.target.validity.valid) {
+      changeDayProp({ employeeId, [name]: e.target.value })  
+    }
+  }
   // function handleClick(event) {
   //   setAnchorEl(event.currentTarget);
   // }
@@ -191,7 +195,7 @@ function AtzKarlTable(props) {
   // }
   // let textInput = React.createRef();
   // console.log(Object.entries(state).length > 0);
-
+  // let tableRef = null;
   return (
     <Paper className={classes.tableWrap}>
       <div className={classes.divTableTop}>
@@ -293,18 +297,19 @@ function AtzKarlTable(props) {
                   <TableCell className={classes.tdCell}>{row.rate}</TableCell>
                   <TableCell>
                     <TextField
-                      id="standard-dense"
                       className={classNames(
                         classes.dayTextField,
                         classes.dense
                       )}
                       margin="dense"
-                      onKeyUp={onKeyUpAmount}
                       inputProps={{
                         maxLength: 2,
                         onKeyUp: onKeyUpAmount,
-                        className: classNames(classes.dayTextField)
+                        className: classNames(classes.dayTextField),
+                        pattern: '[0-9]*'
                       }}
+                      value={row.qtyM}
+                      onChange={(e) => handleDayChange(e, row.employeeId, 'qtyM')}
                     />
                   </TableCell>
                   <TableCell>
@@ -318,8 +323,11 @@ function AtzKarlTable(props) {
                       inputProps={{
                         maxLength: 2,
                         onKeyUp: onKeyUpAmount,
-                        className: classNames(classes.dayTextField)
+                        className: classNames(classes.dayTextField),
+                        pattern: '[0-9]*'
                       }}
+                      value={row.qtyT}
+                      onChange={(e) => handleDayChange(e, row.employeeId, 'qtyT')}
                     />
                   </TableCell>
                   <TableCell>
@@ -333,8 +341,29 @@ function AtzKarlTable(props) {
                       inputProps={{
                         maxLength: 2,
                         onKeyUp: onKeyUpAmount,
-                        className: classNames(classes.dayTextField)
+                        className: classNames(classes.dayTextField),
+                        pattern: '[0-9]*'
                       }}
+                      value={row.qtyW}
+                      onChange={(e) => handleDayChange(e, row.employeeId, 'qtyW')}
+                      />
+                  </TableCell>
+                  <TableCell>
+                    <TextField
+                      id="standard-dense"
+                      className={classNames(
+                        classes.dayTextField,
+                        classes.dense
+                      )}
+                      margin="dense"
+                      inputProps={{
+                        maxLength: 2,
+                        onKeyUp: onKeyUpAmount,
+                        className: classNames(classes.dayTextField),
+                        pattern: '[0-9]*'
+                      }}
+                      value={row.qtyTh}
+                      onChange={(e) => handleDayChange(e, row.employeeId, 'qtyTh')}
                     />
                   </TableCell>
                   <TableCell>
@@ -348,9 +377,12 @@ function AtzKarlTable(props) {
                       inputProps={{
                         maxLength: 2,
                         onKeyUp: onKeyUpAmount,
-                        className: classNames(classes.dayTextField)
+                        className: classNames(classes.dayTextField),
+                        pattern: '[0-9]*'
                       }}
-                    />
+                      value={row.qtyF}
+                      onChange={(e) => handleDayChange(e, row.employeeId, 'qtyF')}
+                      />
                   </TableCell>
                   <TableCell>
                     <TextField
@@ -363,24 +395,12 @@ function AtzKarlTable(props) {
                       inputProps={{
                         maxLength: 2,
                         onKeyUp: onKeyUpAmount,
-                        className: classNames(classes.dayTextField)
+                        className: classNames(classes.dayTextField),
+                        pattern: '[0-9]*'
                       }}
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <TextField
-                      id="standard-dense"
-                      className={classNames(
-                        classes.dayTextField,
-                        classes.dense
-                      )}
-                      margin="dense"
-                      inputProps={{
-                        maxLength: 2,
-                        onKeyUp: onKeyUpAmount,
-                        className: classNames(classes.dayTextField)
-                      }}
-                    />
+                      value={row.qtyS}
+                      onChange={(e) => handleDayChange(e, row.employeeId, 'qtyS')}
+                      />
                   </TableCell>
                   <TableCell className={classes.tdCell}>
                     {row.qtyTotal}
@@ -412,16 +432,6 @@ function AtzKarlTable(props) {
           </TableBody>
         </Table>
         <DialogActions>
-          <Button
-            variant="contained"
-            color="secondary"
-            className={classes.button}
-            size="small"
-            onClick={() => alert("to be calculated")}
-          >
-            <MonetizationOn />
-            Calculate
-          </Button>
           <Button
             variant="contained"
             color="primary"

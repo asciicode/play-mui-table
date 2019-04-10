@@ -24,14 +24,17 @@ function ItemRenderer({ prop1 }){
 
 function TodoList(props) {
   const [todos, setTodos] = useState(['allen', 'cecille']);
-
+  const [val, setVal] = useState('wacky');
   const addTodo = () => {
 
   }
   // console.log(todos)
+  function handleChange(event) {
+    setVal(event.target.value);
+  }
   return (
     <div>Todo List
-
+     <input type="text" value={val} /> 
     {todos.map((item, index) => (
        <div className='indent' key={index} >ALLEN</div>
     ))}

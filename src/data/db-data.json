@@ -24,15 +24,14 @@ payroll_employee: {
   employee_id: many to 1
   employee_rate: 0,
   employee_otmultiplier: 0
-  sss: '',
-  philhealth: ''
+  employee_sss: '',
+  employee_philhealth: ''
 }
 
 payroll_employee_transaction: {
   payroll_employee: many to 1
   pay_element: many to 1
   qty: 0 
-  rate: 0
 
 }
 
@@ -43,8 +42,8 @@ pay_element: {
   description: '', 
   type: '', /* ot or ordinary, remaining pay  */
   group: pay_element_group_id, /* payment or deduction */
-  multiplier: 1.0,
   calculation_rule: ???,
+  multiplier: 1.0,
   rate: ???,
   value: ???
 }
