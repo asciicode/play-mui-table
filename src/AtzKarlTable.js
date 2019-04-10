@@ -14,32 +14,14 @@ import TextField from "@material-ui/core/TextField";
 import classNames from "classnames";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
-import { onKeyUpAmount } from "./utils/handy";
 import SearchAddEmployees from "./SearchAddEmployees";
 import AddNewDialog from "./AddNewDialog";
 import Button from "@material-ui/core/Button";
 import DialogActions from "@material-ui/core/DialogActions";
-import { usePayrollEmployees } from "./utils/hooks";
+import { usePayrollEmployees } from "./hooks/usePayrollEmployees";
 import { generatePayrollRows } from "./data/payroll";
 import Gavel from "@material-ui/icons/Gavel";
-
-const CustomTableCell = withStyles(theme => ({
-  head: {
-    backgroundColor:
-      theme.palette.type === "light"
-        ? theme.palette.common.black
-        : theme.palette.common.black,
-    color:
-      theme.palette.type === "light"
-        ? theme.palette.common.white
-        : theme.palette.common.white,
-    fontSize: 12,
-    whiteSpace: "nowrap"
-  },
-  root: {
-    paddingLeft: 5
-  }
-}))(TableCell);
+import { CustomTableCell } from "./CustomTableCell";
 
 const stylez = theme => ({
   input: base => ({
@@ -103,6 +85,14 @@ const stylez = theme => ({
     textAlign: "right"
   }
 });
+
+const numberInputProps = classes => {
+  return {
+    maxLength: 2,
+    className: classes.dayTextField,
+    pattern: "[0-9]*"
+  };
+};
 
 function AtzKarlTable(props) {
   const [overtime, setOvertime] = React.useState(false);
@@ -195,6 +185,7 @@ function AtzKarlTable(props) {
       changeDayProp({ employeeId, [name]: e.target.value, overtime });
     }
   };
+
   // function handleClick(event) {
   //   setAnchorEl(event.currentTarget);
   // }
@@ -274,16 +265,8 @@ function AtzKarlTable(props) {
               </CustomTableCell>
               <CustomTableCell>Worker Description</CustomTableCell>
 
-              <CustomTableCell>Rate</CustomTableCell>
-              <CustomTableCell>M</CustomTableCell>
-              <CustomTableCell>T</CustomTableCell>
-              <CustomTableCell>W</CustomTableCell>
-              <CustomTableCell>Th</CustomTableCell>
-              <CustomTableCell>F</CustomTableCell>
-              <CustomTableCell>S</CustomTableCell>
-              <CustomTableCell>No. of Hrs</CustomTableCell>
-              <CustomTableCell>Total Amt</CustomTableCell>
-              {overtime && otTableHeaderCol()}
+              <DayTableHeaderCol />
+              {overtime && <DayTableHeaderCol />}
               <CustomTableCell>Net Earnings</CustomTableCell>
               <CustomTableCell>SSS</CustomTableCell>
               <CustomTableCell>PhilHealth</CustomTableCell>
@@ -310,12 +293,7 @@ function AtzKarlTable(props) {
                         classes.dense
                       )}
                       margin="dense"
-                      inputProps={{
-                        maxLength: 2,
-                        onKeyUp: onKeyUpAmount,
-                        className: classNames(classes.dayTextField),
-                        pattern: "[0-9]*"
-                      }}
+                      inputProps={numberInputProps}
                       value={row.qtyM}
                       onChange={e => handleDayChange(e, row.employeeId, "qtyM")}
                     />
@@ -328,12 +306,7 @@ function AtzKarlTable(props) {
                         classes.dense
                       )}
                       margin="dense"
-                      inputProps={{
-                        maxLength: 2,
-                        onKeyUp: onKeyUpAmount,
-                        className: classNames(classes.dayTextField),
-                        pattern: "[0-9]*"
-                      }}
+                      inputProps={numberInputProps}
                       value={row.qtyT}
                       onChange={e => handleDayChange(e, row.employeeId, "qtyT")}
                     />
@@ -346,12 +319,7 @@ function AtzKarlTable(props) {
                         classes.dense
                       )}
                       margin="dense"
-                      inputProps={{
-                        maxLength: 2,
-                        onKeyUp: onKeyUpAmount,
-                        className: classNames(classes.dayTextField),
-                        pattern: "[0-9]*"
-                      }}
+                      inputProps={numberInputProps}
                       value={row.qtyW}
                       onChange={e => handleDayChange(e, row.employeeId, "qtyW")}
                     />
@@ -364,12 +332,7 @@ function AtzKarlTable(props) {
                         classes.dense
                       )}
                       margin="dense"
-                      inputProps={{
-                        maxLength: 2,
-                        onKeyUp: onKeyUpAmount,
-                        className: classNames(classes.dayTextField),
-                        pattern: "[0-9]*"
-                      }}
+                      inputProps={numberInputProps}
                       value={row.qtyTh}
                       onChange={e =>
                         handleDayChange(e, row.employeeId, "qtyTh")
@@ -384,12 +347,7 @@ function AtzKarlTable(props) {
                         classes.dense
                       )}
                       margin="dense"
-                      inputProps={{
-                        maxLength: 2,
-                        onKeyUp: onKeyUpAmount,
-                        className: classNames(classes.dayTextField),
-                        pattern: "[0-9]*"
-                      }}
+                      inputProps={numberInputProps}
                       value={row.qtyF}
                       onChange={e => handleDayChange(e, row.employeeId, "qtyF")}
                     />
@@ -402,12 +360,7 @@ function AtzKarlTable(props) {
                         classes.dense
                       )}
                       margin="dense"
-                      inputProps={{
-                        maxLength: 2,
-                        onKeyUp: onKeyUpAmount,
-                        className: classNames(classes.dayTextField),
-                        pattern: "[0-9]*"
-                      }}
+                      inputProps={numberInputProps}
                       value={row.qtyS}
                       onChange={e => handleDayChange(e, row.employeeId, "qtyS")}
                     />
@@ -419,7 +372,13 @@ function AtzKarlTable(props) {
                     {row.totalAmt}
                   </TableCell>
 
-                  {overtime && otTableRowCol(props, row, handleDayChange)}
+                  {overtime && (
+                    <OvertimeTableRowCol
+                      row={row}
+                      handleDayChange={handleDayChange}
+                      classes={classes}
+                    />
+                  )}
 
                   <TableCell className={classes.tdCell}>
                     {row.netEarnings}
@@ -462,7 +421,7 @@ AtzKarlTable.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-function otTableHeaderCol() {
+function DayTableHeaderCol() {
   return (
     <React.Fragment>
       <CustomTableCell>Rate</CustomTableCell>
@@ -477,8 +436,9 @@ function otTableHeaderCol() {
     </React.Fragment>
   );
 }
-function otTableRowCol(props, row, handleDayChange) {
-  const { classes } = props;
+function OvertimeTableRowCol(props) {
+  const { classes, row, handleDayChange } = props;
+  // console.log(classes);
   return (
     <React.Fragment>
       <TableCell className={classes.tdCell}>{row.otRate}</TableCell>
@@ -487,11 +447,8 @@ function otTableRowCol(props, row, handleDayChange) {
           id="standard-dense"
           className={classNames(classes.dayTextField, classes.dense)}
           margin="dense"
-          inputProps={{
-            maxLength: 2,
-            onKeyUp: onKeyUpAmount,
-            className: classNames(classes.dayTextField)
-          }}
+          inputProps={numberInputProps}
+          value={row.otQtyM}
           onChange={e => handleDayChange(e, row.employeeId, "otQtyM")}
         />
       </TableCell>
@@ -500,11 +457,8 @@ function otTableRowCol(props, row, handleDayChange) {
           id="standard-dense"
           className={classNames(classes.dayTextField, classes.dense)}
           margin="dense"
-          inputProps={{
-            maxLength: 2,
-            onKeyUp: onKeyUpAmount,
-            className: classNames(classes.dayTextField)
-          }}
+          inputProps={numberInputProps}
+          value={row.otQtyT}
           onChange={e => handleDayChange(e, row.employeeId, "otQtyT")}
         />
       </TableCell>
@@ -513,11 +467,8 @@ function otTableRowCol(props, row, handleDayChange) {
           id="standard-dense"
           className={classNames(classes.dayTextField, classes.dense)}
           margin="dense"
-          inputProps={{
-            maxLength: 2,
-            onKeyUp: onKeyUpAmount,
-            className: classNames(classes.dayTextField)
-          }}
+          inputProps={numberInputProps}
+          value={row.otQtyW}
           onChange={e => handleDayChange(e, row.employeeId, "otQtyW")}
         />
       </TableCell>
@@ -526,11 +477,8 @@ function otTableRowCol(props, row, handleDayChange) {
           id="standard-dense"
           className={classNames(classes.dayTextField, classes.dense)}
           margin="dense"
-          inputProps={{
-            maxLength: 2,
-            onKeyUp: onKeyUpAmount,
-            className: classNames(classes.dayTextField)
-          }}
+          inputProps={numberInputProps}
+          value={row.otQtyTh}
           onChange={e => handleDayChange(e, row.employeeId, "otQtyTh")}
         />
       </TableCell>
@@ -539,11 +487,8 @@ function otTableRowCol(props, row, handleDayChange) {
           id="standard-dense"
           className={classNames(classes.dayTextField, classes.dense)}
           margin="dense"
-          inputProps={{
-            maxLength: 2,
-            onKeyUp: onKeyUpAmount,
-            className: classNames(classes.dayTextField)
-          }}
+          inputProps={numberInputProps}
+          value={row.otQtyF}
           onChange={e => handleDayChange(e, row.employeeId, "otQtyF")}
         />
       </TableCell>
@@ -552,11 +497,8 @@ function otTableRowCol(props, row, handleDayChange) {
           id="standard-dense"
           className={classNames(classes.dayTextField, classes.dense)}
           margin="dense"
-          inputProps={{
-            maxLength: 2,
-            onKeyUp: onKeyUpAmount,
-            className: classNames(classes.dayTextField)
-          }}
+          inputProps={numberInputProps}
+          value={row.otQtyS}
           onChange={e => handleDayChange(e, row.employeeId, "otQtyS")}
         />
       </TableCell>

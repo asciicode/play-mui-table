@@ -3,7 +3,6 @@ import { withStyles } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import DialogActions from "@material-ui/core/DialogActions";
-import { onKeyUpAmount } from "./utils/handy";
 import classNames from "classnames";
 import SaveIcon from "@material-ui/icons/Save";
 import PersonAdd from "@material-ui/icons/PersonAdd";
@@ -58,12 +57,6 @@ const EmployeeForm = props => {
   };
 
   const handleAmountChange = event => {
-    // console.log(
-    //   "event :",
-    //   !isNaN(parseFloat(event.target.value, 10)),
-    //   (parseFloat(event.target.value, 10) + "").length,
-    //   event.target.value.length
-    // );
     if (
       !isNaN(parseFloat(event.target.value, 10)) ||
       event.target.value === ""

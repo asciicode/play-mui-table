@@ -10,11 +10,11 @@ import { Add } from "@material-ui/icons";
 import EmployeeForm from "./EmployeeForm";
 
 const Dialog = props => {
-  console.log(props);
+  // console.log(props);
   const [open, setOpen] = React.useState(false);
   const handleToggle = () => {
     setOpen(!open);
-    console.log("handleToggle");
+    // console.log("handleToggle");
   };
   const handleSubmit = form => {
     handleToggle();
