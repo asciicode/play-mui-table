@@ -108,7 +108,13 @@ function AtzKarlTable(props) {
   const [overtime, setOvertime] = React.useState(false);
   // const [anchorEl, setAnchorEl] = React.useState(null);
   const [selectEmployees, setSelectEmployees] = React.useState();
-  const [state, add, removeById, changeDayProp] = usePayrollEmployees();
+  const [
+    state,
+    add,
+    removeById,
+    changeDayProp,
+    recalculate
+  ] = usePayrollEmployees();
   const { classes } = props;
   // console.log(state);
 
@@ -141,7 +147,9 @@ function AtzKarlTable(props) {
     }
   };
   const handleOvertimeToggle = () => {
-    setOvertime(!overtime);
+    const otime = !overtime;
+    setOvertime(otime);
+    recalculate(otime);
   };
   const handleDeleteClick = id => {
     // console.log(tableRef.value);
@@ -184,9 +192,9 @@ function AtzKarlTable(props) {
   const handleDayChange = (e, employeeId, name) => {
     // console.log('e', e.target.value, employeeId, name)
     if (e.target.validity.valid) {
-      changeDayProp({ employeeId, [name]: e.target.value })  
+      changeDayProp({ employeeId, [name]: e.target.value, overtime });
     }
-  }
+  };
   // function handleClick(event) {
   //   setAnchorEl(event.currentTarget);
   // }
@@ -306,10 +314,10 @@ function AtzKarlTable(props) {
                         maxLength: 2,
                         onKeyUp: onKeyUpAmount,
                         className: classNames(classes.dayTextField),
-                        pattern: '[0-9]*'
+                        pattern: "[0-9]*"
                       }}
                       value={row.qtyM}
-                      onChange={(e) => handleDayChange(e, row.employeeId, 'qtyM')}
+                      onChange={e => handleDayChange(e, row.employeeId, "qtyM")}
                     />
                   </TableCell>
                   <TableCell>
@@ -324,10 +332,10 @@ function AtzKarlTable(props) {
                         maxLength: 2,
                         onKeyUp: onKeyUpAmount,
                         className: classNames(classes.dayTextField),
-                        pattern: '[0-9]*'
+                        pattern: "[0-9]*"
                       }}
                       value={row.qtyT}
-                      onChange={(e) => handleDayChange(e, row.employeeId, 'qtyT')}
+                      onChange={e => handleDayChange(e, row.employeeId, "qtyT")}
                     />
                   </TableCell>
                   <TableCell>
@@ -342,28 +350,10 @@ function AtzKarlTable(props) {
                         maxLength: 2,
                         onKeyUp: onKeyUpAmount,
                         className: classNames(classes.dayTextField),
-                        pattern: '[0-9]*'
+                        pattern: "[0-9]*"
                       }}
                       value={row.qtyW}
-                      onChange={(e) => handleDayChange(e, row.employeeId, 'qtyW')}
-                      />
-                  </TableCell>
-                  <TableCell>
-                    <TextField
-                      id="standard-dense"
-                      className={classNames(
-                        classes.dayTextField,
-                        classes.dense
-                      )}
-                      margin="dense"
-                      inputProps={{
-                        maxLength: 2,
-                        onKeyUp: onKeyUpAmount,
-                        className: classNames(classes.dayTextField),
-                        pattern: '[0-9]*'
-                      }}
-                      value={row.qtyTh}
-                      onChange={(e) => handleDayChange(e, row.employeeId, 'qtyTh')}
+                      onChange={e => handleDayChange(e, row.employeeId, "qtyW")}
                     />
                   </TableCell>
                   <TableCell>
@@ -378,11 +368,13 @@ function AtzKarlTable(props) {
                         maxLength: 2,
                         onKeyUp: onKeyUpAmount,
                         className: classNames(classes.dayTextField),
-                        pattern: '[0-9]*'
+                        pattern: "[0-9]*"
                       }}
-                      value={row.qtyF}
-                      onChange={(e) => handleDayChange(e, row.employeeId, 'qtyF')}
-                      />
+                      value={row.qtyTh}
+                      onChange={e =>
+                        handleDayChange(e, row.employeeId, "qtyTh")
+                      }
+                    />
                   </TableCell>
                   <TableCell>
                     <TextField
@@ -396,11 +388,29 @@ function AtzKarlTable(props) {
                         maxLength: 2,
                         onKeyUp: onKeyUpAmount,
                         className: classNames(classes.dayTextField),
-                        pattern: '[0-9]*'
+                        pattern: "[0-9]*"
+                      }}
+                      value={row.qtyF}
+                      onChange={e => handleDayChange(e, row.employeeId, "qtyF")}
+                    />
+                  </TableCell>
+                  <TableCell>
+                    <TextField
+                      id="standard-dense"
+                      className={classNames(
+                        classes.dayTextField,
+                        classes.dense
+                      )}
+                      margin="dense"
+                      inputProps={{
+                        maxLength: 2,
+                        onKeyUp: onKeyUpAmount,
+                        className: classNames(classes.dayTextField),
+                        pattern: "[0-9]*"
                       }}
                       value={row.qtyS}
-                      onChange={(e) => handleDayChange(e, row.employeeId, 'qtyS')}
-                      />
+                      onChange={e => handleDayChange(e, row.employeeId, "qtyS")}
+                    />
                   </TableCell>
                   <TableCell className={classes.tdCell}>
                     {row.qtyTotal}
@@ -409,7 +419,7 @@ function AtzKarlTable(props) {
                     {row.totalAmt}
                   </TableCell>
 
-                  {overtime && otTableRowCol(props, row)}
+                  {overtime && otTableRowCol(props, row, handleDayChange)}
 
                   <TableCell className={classes.tdCell}>
                     {row.netEarnings}
@@ -467,7 +477,7 @@ function otTableHeaderCol() {
     </React.Fragment>
   );
 }
-function otTableRowCol(props, row) {
+function otTableRowCol(props, row, handleDayChange) {
   const { classes } = props;
   return (
     <React.Fragment>
@@ -482,6 +492,7 @@ function otTableRowCol(props, row) {
             onKeyUp: onKeyUpAmount,
             className: classNames(classes.dayTextField)
           }}
+          onChange={e => handleDayChange(e, row.employeeId, "otQtyM")}
         />
       </TableCell>
       <TableCell>
@@ -494,6 +505,7 @@ function otTableRowCol(props, row) {
             onKeyUp: onKeyUpAmount,
             className: classNames(classes.dayTextField)
           }}
+          onChange={e => handleDayChange(e, row.employeeId, "otQtyT")}
         />
       </TableCell>
       <TableCell>
@@ -506,6 +518,7 @@ function otTableRowCol(props, row) {
             onKeyUp: onKeyUpAmount,
             className: classNames(classes.dayTextField)
           }}
+          onChange={e => handleDayChange(e, row.employeeId, "otQtyW")}
         />
       </TableCell>
       <TableCell>
@@ -518,6 +531,7 @@ function otTableRowCol(props, row) {
             onKeyUp: onKeyUpAmount,
             className: classNames(classes.dayTextField)
           }}
+          onChange={e => handleDayChange(e, row.employeeId, "otQtyTh")}
         />
       </TableCell>
       <TableCell>
@@ -530,6 +544,7 @@ function otTableRowCol(props, row) {
             onKeyUp: onKeyUpAmount,
             className: classNames(classes.dayTextField)
           }}
+          onChange={e => handleDayChange(e, row.employeeId, "otQtyF")}
         />
       </TableCell>
       <TableCell>
@@ -542,6 +557,7 @@ function otTableRowCol(props, row) {
             onKeyUp: onKeyUpAmount,
             className: classNames(classes.dayTextField)
           }}
+          onChange={e => handleDayChange(e, row.employeeId, "otQtyS")}
         />
       </TableCell>
       <TableCell className={classes.tdCell}>{row.otQtyTotal}</TableCell>
