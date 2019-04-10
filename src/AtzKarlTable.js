@@ -293,46 +293,43 @@ function AtzKarlTable(props) {
                         classes.dense
                       )}
                       margin="dense"
-                      inputProps={numberInputProps}
+                      inputProps={numberInputProps(classes)}
                       value={row.qtyM}
                       onChange={e => handleDayChange(e, row.employeeId, "qtyM")}
                     />
                   </TableCell>
                   <TableCell>
                     <TextField
-                      id="standard-dense"
                       className={classNames(
                         classes.dayTextField,
                         classes.dense
                       )}
                       margin="dense"
-                      inputProps={numberInputProps}
+                      inputProps={numberInputProps(classes)}
                       value={row.qtyT}
                       onChange={e => handleDayChange(e, row.employeeId, "qtyT")}
                     />
                   </TableCell>
                   <TableCell>
                     <TextField
-                      id="standard-dense"
                       className={classNames(
                         classes.dayTextField,
                         classes.dense
                       )}
                       margin="dense"
-                      inputProps={numberInputProps}
+                      inputProps={numberInputProps(classes)}
                       value={row.qtyW}
                       onChange={e => handleDayChange(e, row.employeeId, "qtyW")}
                     />
                   </TableCell>
                   <TableCell>
                     <TextField
-                      id="standard-dense"
                       className={classNames(
                         classes.dayTextField,
                         classes.dense
                       )}
                       margin="dense"
-                      inputProps={numberInputProps}
+                      inputProps={numberInputProps(classes)}
                       value={row.qtyTh}
                       onChange={e =>
                         handleDayChange(e, row.employeeId, "qtyTh")
@@ -341,26 +338,24 @@ function AtzKarlTable(props) {
                   </TableCell>
                   <TableCell>
                     <TextField
-                      id="standard-dense"
                       className={classNames(
                         classes.dayTextField,
                         classes.dense
                       )}
                       margin="dense"
-                      inputProps={numberInputProps}
+                      inputProps={numberInputProps(classes)}
                       value={row.qtyF}
                       onChange={e => handleDayChange(e, row.employeeId, "qtyF")}
                     />
                   </TableCell>
                   <TableCell>
                     <TextField
-                      id="standard-dense"
                       className={classNames(
                         classes.dayTextField,
                         classes.dense
                       )}
                       margin="dense"
-                      inputProps={numberInputProps}
+                      inputProps={numberInputProps(classes)}
                       value={row.qtyS}
                       onChange={e => handleDayChange(e, row.employeeId, "qtyS")}
                     />
@@ -444,60 +439,54 @@ function OvertimeTableRowCol(props) {
       <TableCell className={classes.tdCell}>{row.otRate}</TableCell>
       <TableCell>
         <TextField
-          id="standard-dense"
           className={classNames(classes.dayTextField, classes.dense)}
           margin="dense"
-          inputProps={numberInputProps}
+          inputProps={numberInputProps(classes)}
           value={row.otQtyM}
           onChange={e => handleDayChange(e, row.employeeId, "otQtyM")}
         />
       </TableCell>
       <TableCell>
         <TextField
-          id="standard-dense"
           className={classNames(classes.dayTextField, classes.dense)}
           margin="dense"
-          inputProps={numberInputProps}
+          inputProps={numberInputProps(classes)}
           value={row.otQtyT}
           onChange={e => handleDayChange(e, row.employeeId, "otQtyT")}
         />
       </TableCell>
       <TableCell>
         <TextField
-          id="standard-dense"
           className={classNames(classes.dayTextField, classes.dense)}
           margin="dense"
-          inputProps={numberInputProps}
+          inputProps={numberInputProps(classes)}
           value={row.otQtyW}
           onChange={e => handleDayChange(e, row.employeeId, "otQtyW")}
         />
       </TableCell>
       <TableCell>
         <TextField
-          id="standard-dense"
           className={classNames(classes.dayTextField, classes.dense)}
           margin="dense"
-          inputProps={numberInputProps}
+          inputProps={numberInputProps(classes)}
           value={row.otQtyTh}
           onChange={e => handleDayChange(e, row.employeeId, "otQtyTh")}
         />
       </TableCell>
       <TableCell>
         <TextField
-          id="standard-dense"
           className={classNames(classes.dayTextField, classes.dense)}
           margin="dense"
-          inputProps={numberInputProps}
+          inputProps={numberInputProps(classes)}
           value={row.otQtyF}
           onChange={e => handleDayChange(e, row.employeeId, "otQtyF")}
         />
       </TableCell>
       <TableCell>
         <TextField
-          id="standard-dense"
           className={classNames(classes.dayTextField, classes.dense)}
           margin="dense"
-          inputProps={numberInputProps}
+          inputProps={numberInputProps(classes)}
           value={row.otQtyS}
           onChange={e => handleDayChange(e, row.employeeId, "otQtyS")}
         />
