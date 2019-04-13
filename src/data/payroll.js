@@ -57,10 +57,10 @@ export function generatePayrollRows() {
   for (let index = 0; index < employees.length; index++) {
     // let rec = payrollRowEmpty;
     const rate = (Math.floor(Math.random() * 20) + 40).toFixed(2);
-
+    const emp = employees[index].split(" ");
     const rec = {
       employeeId: Math.random(10),
-      fullname: employees[index],
+      fullname: `${emp[1]}, ${emp[0]}`,
       jobDescription: "Bundling",
       rate: rate,
       otRate: (rate * 1.3).toFixed(2)
@@ -74,3 +74,13 @@ export function generatePayrollRows() {
 
   return { payrollEmployees, remainingEmployees };
 }
+
+export const employeeRowEmpty = {
+  lastname: "",
+  firstname: "",
+  jobDescription: "",
+  rate: "",
+  otMultiplier: "",
+  sss: "",
+  philHealth: ""
+};

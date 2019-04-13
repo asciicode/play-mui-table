@@ -15,13 +15,17 @@ import classNames from "classnames";
 import IconButton from "@material-ui/core/IconButton";
 import DeleteIcon from "@material-ui/icons/Delete";
 import SearchAddEmployees from "./SearchAddEmployees";
-import AddNewDialog from "./AddNewDialog";
+import EmployeeDialog from "./EmployeeDialog";
 import Button from "@material-ui/core/Button";
 import DialogActions from "@material-ui/core/DialogActions";
 import { usePayrollEmployees } from "./hooks/usePayrollEmployees";
 import { generatePayrollRows } from "./data/payroll";
 import Gavel from "@material-ui/icons/Gavel";
 import { CustomTableCell } from "./CustomTableCell";
+import SaveIcon from "@material-ui/icons/Save";
+import PersonAdd from "@material-ui/icons/PersonAdd";
+import { Fab } from "@material-ui/core";
+import { Add } from "@material-ui/icons";
 
 const stylez = theme => ({
   input: base => ({
@@ -166,12 +170,20 @@ function AtzKarlTable(props) {
   };
 
   const prepareForm = form => {
-    const { lastname, firstname, rate, otMultiplier, sss, philHealth } = form;
+    const {
+      lastname,
+      firstname,
+      jobDescription,
+      rate,
+      otMultiplier,
+      sss,
+      philHealth
+    } = form;
     let r = parseFloat(rate).toFixed(2);
     const rec = {
       employeeId: Math.random(10),
-      fullname: firstname + " " + lastname,
-      jobDescription: "Bundling",
+      fullname: `${lastname}, ${firstname} `,
+      jobDescription,
       rate: r,
       otRate: (r * parseFloat(otMultiplier)).toFixed(2),
       sss: parseFloat(sss).toFixed(2),
@@ -186,6 +198,11 @@ function AtzKarlTable(props) {
     }
   };
 
+  const [open, setOpen] = React.useState(false);
+  const handleToggle = () => {
+    setOpen(!open);
+    // console.log("handleToggle");
+  };
   // function handleClick(event) {
   //   setAnchorEl(event.currentTarget);
   // }
@@ -252,15 +269,15 @@ function AtzKarlTable(props) {
               <CustomTableCell>
                 Employee
                 <div style={{ display: "inline-block" }}>
-                  <AddNewDialog onSubmit={handleAddEmployee} />
-                  {/* <Fab
-                    color="secondary"
-                    aria-label="Add"
-                    size="small"
-                    onClick={() => handleAddEmployee()}
-                  >
-                    <AddIcon />
-                  </Fab> */}
+                  <Fab color="secondary" size="small" onClick={handleToggle}>
+                    <Add />
+                  </Fab>
+                  <EmployeeDialog
+                    onSubmit={handleAddEmployee}
+                    addToPayrollBtn={true}
+                    open={open}
+                    onToggle={handleToggle}
+                  />
                 </div>
               </CustomTableCell>
               <CustomTableCell>Worker Description</CustomTableCell>

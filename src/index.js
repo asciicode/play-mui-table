@@ -6,11 +6,13 @@ import { MuiThemeProvider, createMuiTheme } from "@material-ui/core";
 // import ReactVirtualizedTable from './ReactVirtualizedTable'
 // import ReactWin from './ReactWin';
 import AtzKarlTable from "./AtzKarlTable";
-import EmployeeForm from "./EmployeeForm";
-import SearchAddEmployees from "./SearchAddEmployees";
+// import EmployeeDialog from "./EmployeeDialog";
+// import SearchAddEmployees from "./SearchAddEmployees";
 // import CssBaseline from '@material-ui/core/CssBaseline';
 // <CssBaseline />
-import TodoList from './Experimental/TodoList';
+import TodoList from "./Experimental/TodoList";
+import Employee from "./Employee";
+
 // import { generatePayrollRows } from "./data/payroll";
 
 const theme = createMuiTheme({
@@ -57,7 +59,7 @@ const theme = createMuiTheme({
 // );
 // ReactDOM.render(
 // 	<MuiThemeProvider theme={theme}>
-// 		<EmployeeForm />
+// 		<EmployeeDialog />
 // 	</MuiThemeProvider>,
 // 	document.getElementById('root')
 // );
@@ -68,8 +70,14 @@ ReactDOM.render(
   </MuiThemeProvider>,
   document.getElementById("root")
 );
+// ReactDOM.render(
+//   <MuiThemeProvider theme={theme}>
+//     <Employee />
+//   </MuiThemeProvider>,
+//   document.getElementById("root")
+// );
 
-// If you want your app to work offline and load faster, you can ReactDOM.render(<MuiThemeProvider theme={theme}><EmployeeForm /></MuiThemeProvider>, document.getElementById('root'));
+// If you want your app to work offline and load faster, you can ReactDOM.render(<MuiThemeProvider theme={theme}><EmployeeDialog /></MuiThemeProvider>, document.getElementById('root'));
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
 // serviceWorker.unregister();

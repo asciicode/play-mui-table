@@ -10,7 +10,7 @@ import PersonAdd from "@material-ui/icons/PersonAdd";
 const useStyles = theme => ({
   root: {
     flexGrow: 1,
-    height: 500,
+    height: 550,
     backgroundColor:
       theme.palette.type === "light"
         ? theme.palette.grey[200]
@@ -41,13 +41,20 @@ const EmployeeForm = props => {
   const [form, setForm] = React.useState({
     lastname: "",
     firstname: "",
+    jobDescription: "",
     rate: "",
     otMultiplier: "",
     sss: "",
     philHealth: ""
   });
   const { classes } = props;
-  // console.log(form);
+  console.log(props);
+
+  React.useEffect(() => {
+    if (props.data) {
+      setForm(props.data);
+    }
+  }, []);
 
   const handleChange = event => {
     setForm({
@@ -76,12 +83,12 @@ const EmployeeForm = props => {
       });
     }
   };
-  const handleSubmit = action => {
-    console.log(action);
+  const handleSubmit = act => {
+    console.log(act);
 
     props.onSubmit({
       ...form,
-      action: action
+      action: act
     });
   };
   return (
@@ -101,6 +108,14 @@ const EmployeeForm = props => {
           margin="normal"
           fullWidth
           value={form.firstname}
+          onChange={handleChange}
+        />
+        <TextField
+          id="jobDescription"
+          label="Job Description"
+          margin="normal"
+          fullWidth
+          value={form.jobDescription}
           onChange={handleChange}
         />
         <TextField
@@ -153,16 +168,18 @@ const EmployeeForm = props => {
             />
             Save
           </Button>
-          <Button
-            variant="contained"
-            color="primary"
-            className={classes.button}
-            size="small"
-            onClick={() => handleSubmit("addToPayroll")}
-          >
-            <PersonAdd />
-            Add to Payroll
-          </Button>
+          {props.addToPayrollBtn && (
+            <Button
+              variant="contained"
+              color="primary"
+              className={classes.button}
+              size="small"
+              onClick={() => handleSubmit("addToPayroll")}
+            >
+              <PersonAdd />
+              Add to Payroll
+            </Button>
+          )}
         </DialogActions>
       </form>
     </div>

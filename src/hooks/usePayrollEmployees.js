@@ -61,7 +61,7 @@ const computeQtyTotal = newRec => {
   return [qtyTotal, otQtyTotal];
 };
 
-export const payrollActionTypes = {
+const payrollActionTypes = {
   ADD: "add",
   ADD_ALL: "add_all",
   DELETE: "delete",
