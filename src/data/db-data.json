@@ -1,7 +1,7 @@
 
 
 employee: {
-  id: 0
+  id: 0,
   lastname: '',
   firstname: '',
   job_description: '',
