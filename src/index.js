@@ -1,6 +1,6 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { MuiThemeProvider, createMuiTheme } from "@material-ui/core";
+//import { MuiThemeProvider, createMuiTheme } from "@material-ui/core";
 // import { purple, red } from '@material-ui/core/colors'
 // import './index.css';
 // import ReactVirtualizedTable from './ReactVirtualizedTable'
@@ -12,7 +12,9 @@ import AtzKarlTable from "./AtzKarlTable";
 // <CssBaseline />
 import TodoList from "./Experimental/TodoList";
 import Employee from "./Employee";
-
+import Sweldo from "./Sweldo";
+import { createMuiTheme } from "@material-ui/core/styles";
+import { ThemeProvider } from "@material-ui/styles";
 // import { generatePayrollRows } from "./data/payroll";
 
 const theme = createMuiTheme({
@@ -63,13 +65,17 @@ const theme = createMuiTheme({
 // 	</MuiThemeProvider>,
 // 	document.getElementById('root')
 // );
-// ReactDOM.render(<TodoList />, document.getElementById('root'));
-ReactDOM.render(
-  <MuiThemeProvider theme={theme}>
-    <AtzKarlTable />
-  </MuiThemeProvider>,
-  document.getElementById("root")
-);
+// ReactDOM.render(<TodoList />, document.getElementById("root"));
+ReactDOM.render(<ThemeProvider theme={theme}>
+    <Sweldo />
+  </ThemeProvider>,
+  document.querySelector("#root"));
+// ReactDOM.render(
+//   <MuiThemeProvider theme={theme}>
+//     <AtzKarlTable />
+//   </MuiThemeProvider>,
+//   document.getElementById("root")
+// );
 // ReactDOM.render(
 //   <MuiThemeProvider theme={theme}>
 //     <Employee />
