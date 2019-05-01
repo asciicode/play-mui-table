@@ -2,8 +2,8 @@
 
 employee: {
   id: 0,
-  lastname: '',
-  firstname: '',
+  first_name: '',
+  surname: '',
   job_description: '',
   rate: 0,
   otmultiplier: 0, /* ??? maybe to elements in the future */
