@@ -1,0 +1,19 @@
+npm install -g npm-check-updates
+
+ncu -u
+
+npm install
+
+npm update
+
+Uninstal Ionic and Cordova:
+
+npm uninstall cordova ionic
+Then clean cache:
+
+npm cache clean -f
+Then install ionic and cordova again:
+
+npm install -g ionic@3.4.0
+npm install -g cordova@7.0.1
+Worked for me!
