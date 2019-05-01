@@ -5,6 +5,12 @@ import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
 import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
+import ClickAwayListener from "@material-ui/core/ClickAwayListener";
+import Grow from "@material-ui/core/Grow";
+import Paper from "@material-ui/core/Paper";
+import Popper from "@material-ui/core/Popper";
+import MenuItem from "@material-ui/core/MenuItem";
+import MenuList from "@material-ui/core/MenuList";
 
 const drawerWidth = 240;
 
@@ -73,14 +79,20 @@ const useStyles = makeStyles(theme => ({
 
 function Sweldo() {
   const classes = useStyles();
-  console.log(classes);
+  const theme = useTheme();
+  console.log(theme);
   const [open, setOpen] = React.useState(false);
+  const anchorEl = React.useRef(null);
 
-  function handleDrawerOpen() {
-    setOpen(true);
+  function handleToggle() {
+    setOpen(!open);
   }
 
-  function handleDrawerClose() {
+  function handleClose(event) {
+    if (anchorEl.current.contains(event.target)) {
+      return;
+    }
+
     setOpen(false);
   }
 
@@ -92,32 +104,62 @@ function Sweldo() {
             Atzkarl Trading
           </Typography>
           <div style={{ flexGrow: "1" }} />
-          <Button
-            classes={{
-              root: classes.root, // class name, e.g. `classes-nesting-root-x`
-              label: classes.buttonLabel // class name, e.g. `classes-nesting-label-x`
-            }}
-          >
-            Employee
-          </Button>
-          <Button
-            classes={{
-              root: classes.root, // class name, e.g. `classes-nesting-root-x`
-              label: classes.buttonLabel // class name, e.g. `classes-nesting-label-x`
-            }}
-            // buttonRef={anchorEl}
-            aria-owns={open ? "menu-list-grow" : undefined}
-            aria-haspopup="true"
-            // onClick={handleToggle}
-          >
-            Payroll
-          </Button>
+          <div>
+            <Button
+              classes={{
+                root: classes.root, // class name, e.g. `classes-nesting-root-x`
+                label: classes.buttonLabel // class name, e.g. `classes-nesting-label-x`
+              }}
+            >
+              Employee
+            </Button>
+            <Button
+              classes={{
+                root: classes.root, // class name, e.g. `classes-nesting-root-x`
+                label: classes.buttonLabel // class name, e.g. `classes-nesting-label-x`
+              }}
+              buttonRef={anchorEl}
+              aria-owns={open ? "menu-list-grow" : undefined}
+              aria-haspopup="true"
+              onClick={handleToggle}
+            >
+              Payroll
+            </Button>
+
+            <Popper
+              open={open}
+              anchorEl={anchorEl.current}
+              transition
+              disablePortal
+            >
+              {({ TransitionProps, placement }) => (
+                <Grow
+                  {...TransitionProps}
+                  id="menu-list-grow"
+                  style={{
+                    transformOrigin:
+                      placement === "bottom" ? "center top" : "center bottom"
+                  }}
+                >
+                  <Paper>
+                    <ClickAwayListener onClickAway={handleClose}>
+                      <MenuList>
+                        <MenuItem onClick={handleClose}>Profile</MenuItem>
+                        <MenuItem onClick={handleClose}>My account</MenuItem>
+                        <MenuItem onClick={handleClose}>Logout</MenuItem>
+                      </MenuList>
+                    </ClickAwayListener>
+                  </Paper>
+                </Grow>
+              )}
+            </Popper>
+          </div>
         </Toolbar>
       </AppBar>
 
       <main className={classes.content}>
         <div className={classes.toolbar} />
-        <Typography paragraph>
+        <Typography paragraph color="inherit">
           Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do
           eiusmod tempor incididunt ut labore et dolore magna aliqua. Rhoncus
           dolor purus non enim praesent elementum facilisis leo vel. Risus at

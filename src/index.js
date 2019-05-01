@@ -44,7 +44,9 @@ const theme = createMuiTheme({
         marginLeft: 8,
         marginRight: 8
       }
-    }
+    },
+    MuiPaper: {},
+    MuiTypography: {}
   }
 });
 
