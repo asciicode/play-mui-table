@@ -66,10 +66,12 @@ const theme = createMuiTheme({
 // 	document.getElementById('root')
 // );
 // ReactDOM.render(<TodoList />, document.getElementById("root"));
-ReactDOM.render(<ThemeProvider theme={theme}>
+ReactDOM.render(
+  <ThemeProvider theme={theme}>
     <Sweldo />
   </ThemeProvider>,
-  document.querySelector("#root"));
+  document.querySelector("#root")
+);
 // ReactDOM.render(
 //   <MuiThemeProvider theme={theme}>
 //     <AtzKarlTable />
