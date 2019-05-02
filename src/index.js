@@ -1,6 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
-//import { MuiThemeProvider, createMuiTheme } from "@material-ui/core";
+// import { MuiThemeProvider } from "@material-ui/core";
+import { MuiThemeProvider } from "@material-ui/core/styles";
 // import { purple, red } from '@material-ui/core/colors'
 // import './index.css';
 // import ReactVirtualizedTable from './ReactVirtualizedTable'
@@ -8,11 +9,11 @@ import ReactDOM from "react-dom";
 import AtzKarlTable from "./AtzKarlTable";
 // import EmployeeDialog from "./EmployeeDialog";
 // import SearchAddEmployees from "./SearchAddEmployees";
-// import CssBaseline from '@material-ui/core/CssBaseline';
-// <CssBaseline />
+import CssBaseline from "@material-ui/core/CssBaseline";
 import TodoList from "./Experimental/TodoList";
 import Employee from "./Employee";
-import Sweldo from "./Sweldo";
+import Home from "./Home";
+import App from "./App";
 import { createMuiTheme } from "@material-ui/core/styles";
 import { ThemeProvider } from "@material-ui/styles";
 // import { generatePayrollRows } from "./data/payroll";
@@ -70,10 +71,20 @@ const theme = createMuiTheme({
 // ReactDOM.render(<TodoList />, document.getElementById("root"));
 ReactDOM.render(
   <ThemeProvider theme={theme}>
-    <Sweldo />
+    <MuiThemeProvider theme={theme}>
+      <App />
+    </MuiThemeProvider>
   </ThemeProvider>,
-  document.querySelector("#root")
+  document.getElementById("root")
 );
+// theme provider not working for background color
+// ReactDOM.render(
+//   <ThemeProvider theme={theme}>
+//     <CssBaseline />
+//     <HiThere />
+//   </ThemeProvider>,
+//   document.getElementById("root")
+// );
 // ReactDOM.render(
 //   <MuiThemeProvider theme={theme}>
 //     <AtzKarlTable />

@@ -22,6 +22,8 @@ import {
 import EmployeeDialog from "./EmployeeDialog";
 import { Add } from "@material-ui/icons";
 import { employeeRowEmpty } from "./data/payroll";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Swelbar from "./Layout/Swelbar";
 
 const stylez = theme => ({
   input: base => ({
@@ -83,6 +85,10 @@ const stylez = theme => ({
     paddingLeft: 5,
     paddingRight: 5,
     textAlign: "right"
+  },
+  toolbar: theme.mixins.toolbar,
+  content: {
+    flexGrow: 1
   }
 });
 
@@ -125,80 +131,98 @@ function Employee(props) {
     deleteEmployee(id);
   };
   return (
-    <Paper className={classes.tableWrap}>
-      <Paper className={classes.root}>
-        <Table className={classes.table}>
-          <TableHead>
-            <TableRow>
-              <CustomTableCell>
-                Lastname
-                <div style={{ display: "inline-block" }}>
-                  <Fab color="secondary" size="small" onClick={handleToggle}>
-                    <Add />
-                  </Fab>
-                  <EmployeeDialog
-                    onSubmit={handleSubmit}
-                    open={open}
-                    onToggle={handleToggle}
-                    data={employee}
-                  />
-                </div>
-              </CustomTableCell>
-              <CustomTableCell>Firstname</CustomTableCell>
+    <div className={classes.root}>
+      <CssBaseline />
 
-              <CustomTableCell>Job Description</CustomTableCell>
-              <CustomTableCell>Rate</CustomTableCell>
-              <CustomTableCell>OT multiplier</CustomTableCell>
-              <CustomTableCell>SSS</CustomTableCell>
-              <CustomTableCell>PhilHealth</CustomTableCell>
-              <CustomTableCell style={{ width: "1%" }} />
-              <CustomTableCell style={{ width: "1%" }} />
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {Object.entries(state).length > 0 &&
-              state.map(row => (
-                <TableRow
-                  className={classNames(classes.row, classes.tableRowHover)}
-                  key={row.employeeId}
-                >
-                  <TableCell component="td" scope="row">
-                    {row.lastname}
-                  </TableCell>
-                  <TableCell>{row.firstname}</TableCell>
-                  <TableCell>{row.jobDescription}</TableCell>
-                  <TableCell className={classes.tdCell}>{row.rate}</TableCell>
-                  <TableCell className={classes.tdCell}>
-                    {row.otMultiplier}
-                  </TableCell>
-                  <TableCell className={classes.tdCell}>{row.sss}</TableCell>
-                  <TableCell className={classes.tdCell}>
-                    {row.philHealth}
-                  </TableCell>
-                  <TableCell align="center">
-                    <IconButton
-                      className={classes.button}
-                      aria-label="Delete"
-                      onClick={() => handleEditClick(row.employeeId)}
-                    >
-                      <EditIcon />
-                    </IconButton>
-                  </TableCell>
-                  <TableCell align="center">
-                    <IconButton
-                      className={classes.button}
-                      aria-label="Delete"
-                      onClick={() => handleDeleteClick(row.employeeId)}
-                    >
-                      <DeleteIcon />
-                    </IconButton>
-                  </TableCell>
+      <Swelbar />
+
+      <main className={classes.content}>
+        <div className={classes.toolbar} />
+
+        <Paper className={classes.tableWrap}>
+          <Paper className={classes.root}>
+            <Table className={classes.table}>
+              <TableHead>
+                <TableRow>
+                  <CustomTableCell>
+                    Lastname
+                    <div style={{ display: "inline-block" }}>
+                      <Fab
+                        color="secondary"
+                        size="small"
+                        onClick={handleToggle}
+                      >
+                        <Add />
+                      </Fab>
+                      <EmployeeDialog
+                        onSubmit={handleSubmit}
+                        open={open}
+                        onToggle={handleToggle}
+                        data={employee}
+                      />
+                    </div>
+                  </CustomTableCell>
+                  <CustomTableCell>Firstname</CustomTableCell>
+
+                  <CustomTableCell>Job Description</CustomTableCell>
+                  <CustomTableCell>Rate</CustomTableCell>
+                  <CustomTableCell>OT multiplier</CustomTableCell>
+                  <CustomTableCell>SSS</CustomTableCell>
+                  <CustomTableCell>PhilHealth</CustomTableCell>
+                  <CustomTableCell style={{ width: "1%" }} />
+                  <CustomTableCell style={{ width: "1%" }} />
                 </TableRow>
-              ))}
-          </TableBody>
-        </Table>
-      </Paper>
-    </Paper>
+              </TableHead>
+              <TableBody>
+                {Object.entries(state).length > 0 &&
+                  state.map(row => (
+                    <TableRow
+                      className={classNames(classes.row, classes.tableRowHover)}
+                      key={row.employeeId}
+                    >
+                      <TableCell component="td" scope="row">
+                        {row.lastname}
+                      </TableCell>
+                      <TableCell>{row.firstname}</TableCell>
+                      <TableCell>{row.jobDescription}</TableCell>
+                      <TableCell className={classes.tdCell}>
+                        {row.rate}
+                      </TableCell>
+                      <TableCell className={classes.tdCell}>
+                        {row.otMultiplier}
+                      </TableCell>
+                      <TableCell className={classes.tdCell}>
+                        {row.sss}
+                      </TableCell>
+                      <TableCell className={classes.tdCell}>
+                        {row.philHealth}
+                      </TableCell>
+                      <TableCell align="center">
+                        <IconButton
+                          className={classes.button}
+                          aria-label="Delete"
+                          onClick={() => handleEditClick(row.employeeId)}
+                        >
+                          <EditIcon />
+                        </IconButton>
+                      </TableCell>
+                      <TableCell align="center">
+                        <IconButton
+                          className={classes.button}
+                          aria-label="Delete"
+                          onClick={() => handleDeleteClick(row.employeeId)}
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+              </TableBody>
+            </Table>
+          </Paper>
+        </Paper>
+      </main>
+    </div>
   );
 }
 

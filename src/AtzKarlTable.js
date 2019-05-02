@@ -26,6 +26,8 @@ import SaveIcon from "@material-ui/icons/Save";
 import PersonAdd from "@material-ui/icons/PersonAdd";
 import { Fab } from "@material-ui/core";
 import { Add } from "@material-ui/icons";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import Swelbar from "./Layout/Swelbar";
 
 const stylez = theme => ({
   input: base => ({
@@ -87,6 +89,10 @@ const stylez = theme => ({
     paddingLeft: 5,
     paddingRight: 5,
     textAlign: "right"
+  },
+  toolbar: theme.mixins.toolbar,
+  content: {
+    flexGrow: 1
   }
 });
 
@@ -213,219 +219,245 @@ function AtzKarlTable(props) {
   // console.log(Object.entries(state).length > 0);
   // let tableRef = null;
   return (
-    <Paper className={classes.tableWrap}>
-      <div className={classes.divTableTop}>
-        <FormGroup>
-          <FormControlLabel
-            control={
-              <Checkbox
-                checked={overtime}
-                onChange={handleOvertimeToggle}
-                value=""
+    <div className={classes.root}>
+      <CssBaseline />
+
+      <Swelbar />
+      <main className={classes.content}>
+        <div className={classes.toolbar} />
+        <Paper className={classes.tableWrap}>
+          <div className={classes.divTableTop}>
+            <FormGroup>
+              <FormControlLabel
+                control={
+                  <Checkbox
+                    checked={overtime}
+                    onChange={handleOvertimeToggle}
+                    value=""
+                  />
+                }
+                label="Overtime"
               />
-            }
-            label="Overtime"
-          />
-        </FormGroup>
-        <SearchAddEmployees
-          employees={selectEmployees}
-          onClickAdd={handleSearchAddClick}
-        />
-      </div>
-      <Paper className={classes.root}>
-        <Table className={classes.table}>
-          {overtime && (
-            <React.Fragment>
+            </FormGroup>
+            <SearchAddEmployees
+              employees={selectEmployees}
+              onClickAdd={handleSearchAddClick}
+            />
+          </div>
+          <Paper className={classes.root}>
+            <Table className={classes.table}>
+              {overtime && (
+                <React.Fragment>
+                  <TableHead>
+                    <TableRow>
+                      <CustomTableCell
+                        colSpan={2}
+                        className={classes.overtimeBox}
+                      />
+                      <CustomTableCell
+                        colSpan={9}
+                        align="center"
+                        className={classes.overtimeBox}
+                      >
+                        Ordinary
+                      </CustomTableCell>
+                      <CustomTableCell
+                        colSpan={9}
+                        align="center"
+                        className={classes.overtimeBox}
+                      >
+                        Overtime
+                      </CustomTableCell>
+                      <CustomTableCell
+                        colSpan={4}
+                        className={classes.overtimeBox}
+                      />
+                    </TableRow>
+                  </TableHead>
+                </React.Fragment>
+              )}
               <TableHead>
                 <TableRow>
-                  <CustomTableCell
-                    colSpan={2}
-                    className={classes.overtimeBox}
-                  />
-                  <CustomTableCell
-                    colSpan={9}
-                    align="center"
-                    className={classes.overtimeBox}
-                  >
-                    Ordinary
+                  <CustomTableCell>
+                    Employee
+                    <div style={{ display: "inline-block" }}>
+                      <Fab
+                        color="secondary"
+                        size="small"
+                        onClick={handleToggle}
+                      >
+                        <Add />
+                      </Fab>
+                      <EmployeeDialog
+                        onSubmit={handleAddEmployee}
+                        addToPayrollBtn={true}
+                        open={open}
+                        onToggle={handleToggle}
+                      />
+                    </div>
                   </CustomTableCell>
-                  <CustomTableCell
-                    colSpan={9}
-                    align="center"
-                    className={classes.overtimeBox}
-                  >
-                    Overtime
-                  </CustomTableCell>
-                  <CustomTableCell
-                    colSpan={4}
-                    className={classes.overtimeBox}
-                  />
+                  <CustomTableCell>Worker Description</CustomTableCell>
+
+                  <DayTableHeaderCol />
+                  {overtime && <DayTableHeaderCol />}
+                  <CustomTableCell>Net Earnings</CustomTableCell>
+                  <CustomTableCell>SSS</CustomTableCell>
+                  <CustomTableCell>PhilHealth</CustomTableCell>
+                  <CustomTableCell />
                 </TableRow>
               </TableHead>
-            </React.Fragment>
-          )}
-          <TableHead>
-            <TableRow>
-              <CustomTableCell>
-                Employee
-                <div style={{ display: "inline-block" }}>
-                  <Fab color="secondary" size="small" onClick={handleToggle}>
-                    <Add />
-                  </Fab>
-                  <EmployeeDialog
-                    onSubmit={handleAddEmployee}
-                    addToPayrollBtn={true}
-                    open={open}
-                    onToggle={handleToggle}
-                  />
-                </div>
-              </CustomTableCell>
-              <CustomTableCell>Worker Description</CustomTableCell>
 
-              <DayTableHeaderCol />
-              {overtime && <DayTableHeaderCol />}
-              <CustomTableCell>Net Earnings</CustomTableCell>
-              <CustomTableCell>SSS</CustomTableCell>
-              <CustomTableCell>PhilHealth</CustomTableCell>
-              <CustomTableCell />
-            </TableRow>
-          </TableHead>
-
-          <TableBody>
-            {Object.entries(state).length > 0 &&
-              state.map(row => (
-                <TableRow
-                  className={classNames(classes.row, classes.tableRowHover)}
-                  key={row.employeeId}
-                >
-                  <TableCell component="td" scope="row">
-                    {row.fullname}
-                  </TableCell>
-                  <TableCell>{row.jobDescription}</TableCell>
-                  <TableCell className={classes.tdCell}>{row.rate}</TableCell>
-                  <TableCell>
-                    <TextField
-                      className={classNames(
-                        classes.dayTextField,
-                        classes.dense
-                      )}
-                      margin="dense"
-                      inputProps={numberInputProps(classes)}
-                      value={row.qtyM}
-                      onChange={e => handleDayChange(e, row.employeeId, "qtyM")}
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <TextField
-                      className={classNames(
-                        classes.dayTextField,
-                        classes.dense
-                      )}
-                      margin="dense"
-                      inputProps={numberInputProps(classes)}
-                      value={row.qtyT}
-                      onChange={e => handleDayChange(e, row.employeeId, "qtyT")}
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <TextField
-                      className={classNames(
-                        classes.dayTextField,
-                        classes.dense
-                      )}
-                      margin="dense"
-                      inputProps={numberInputProps(classes)}
-                      value={row.qtyW}
-                      onChange={e => handleDayChange(e, row.employeeId, "qtyW")}
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <TextField
-                      className={classNames(
-                        classes.dayTextField,
-                        classes.dense
-                      )}
-                      margin="dense"
-                      inputProps={numberInputProps(classes)}
-                      value={row.qtyTh}
-                      onChange={e =>
-                        handleDayChange(e, row.employeeId, "qtyTh")
-                      }
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <TextField
-                      className={classNames(
-                        classes.dayTextField,
-                        classes.dense
-                      )}
-                      margin="dense"
-                      inputProps={numberInputProps(classes)}
-                      value={row.qtyF}
-                      onChange={e => handleDayChange(e, row.employeeId, "qtyF")}
-                    />
-                  </TableCell>
-                  <TableCell>
-                    <TextField
-                      className={classNames(
-                        classes.dayTextField,
-                        classes.dense
-                      )}
-                      margin="dense"
-                      inputProps={numberInputProps(classes)}
-                      value={row.qtyS}
-                      onChange={e => handleDayChange(e, row.employeeId, "qtyS")}
-                    />
-                  </TableCell>
-                  <TableCell className={classes.tdCell}>
-                    {row.qtyTotal}
-                  </TableCell>
-                  <TableCell className={classes.tdCell}>
-                    {row.totalAmt}
-                  </TableCell>
-
-                  {overtime && (
-                    <OvertimeTableRowCol
-                      row={row}
-                      handleDayChange={handleDayChange}
-                      classes={classes}
-                    />
-                  )}
-
-                  <TableCell className={classes.tdCell}>
-                    {row.netEarnings}
-                  </TableCell>
-                  <TableCell className={classes.tdCell}>{row.sss}</TableCell>
-                  <TableCell className={classes.tdCell}>
-                    {row.philHealth}
-                  </TableCell>
-                  <TableCell align="center">
-                    <IconButton
-                      className={classes.button}
-                      aria-label="Delete"
-                      onClick={() => handleDeleteClick(row.employeeId)}
+              <TableBody>
+                {Object.entries(state).length > 0 &&
+                  state.map(row => (
+                    <TableRow
+                      className={classNames(classes.row, classes.tableRowHover)}
+                      key={row.employeeId}
                     >
-                      <DeleteIcon />
-                    </IconButton>
-                  </TableCell>
-                </TableRow>
-              ))}
-          </TableBody>
-        </Table>
-        <DialogActions>
-          <Button
-            variant="contained"
-            color="primary"
-            className={classes.button}
-            size="small"
-            onClick={() => alert("to be confirmed")}
-          >
-            <Gavel />
-            Confirm
-          </Button>
-        </DialogActions>
-      </Paper>
-    </Paper>
+                      <TableCell component="td" scope="row">
+                        {row.fullname}
+                      </TableCell>
+                      <TableCell>{row.jobDescription}</TableCell>
+                      <TableCell className={classes.tdCell}>
+                        {row.rate}
+                      </TableCell>
+                      <TableCell>
+                        <TextField
+                          className={classNames(
+                            classes.dayTextField,
+                            classes.dense
+                          )}
+                          margin="dense"
+                          inputProps={numberInputProps(classes)}
+                          value={row.qtyM}
+                          onChange={e =>
+                            handleDayChange(e, row.employeeId, "qtyM")
+                          }
+                        />
+                      </TableCell>
+                      <TableCell>
+                        <TextField
+                          className={classNames(
+                            classes.dayTextField,
+                            classes.dense
+                          )}
+                          margin="dense"
+                          inputProps={numberInputProps(classes)}
+                          value={row.qtyT}
+                          onChange={e =>
+                            handleDayChange(e, row.employeeId, "qtyT")
+                          }
+                        />
+                      </TableCell>
+                      <TableCell>
+                        <TextField
+                          className={classNames(
+                            classes.dayTextField,
+                            classes.dense
+                          )}
+                          margin="dense"
+                          inputProps={numberInputProps(classes)}
+                          value={row.qtyW}
+                          onChange={e =>
+                            handleDayChange(e, row.employeeId, "qtyW")
+                          }
+                        />
+                      </TableCell>
+                      <TableCell>
+                        <TextField
+                          className={classNames(
+                            classes.dayTextField,
+                            classes.dense
+                          )}
+                          margin="dense"
+                          inputProps={numberInputProps(classes)}
+                          value={row.qtyTh}
+                          onChange={e =>
+                            handleDayChange(e, row.employeeId, "qtyTh")
+                          }
+                        />
+                      </TableCell>
+                      <TableCell>
+                        <TextField
+                          className={classNames(
+                            classes.dayTextField,
+                            classes.dense
+                          )}
+                          margin="dense"
+                          inputProps={numberInputProps(classes)}
+                          value={row.qtyF}
+                          onChange={e =>
+                            handleDayChange(e, row.employeeId, "qtyF")
+                          }
+                        />
+                      </TableCell>
+                      <TableCell>
+                        <TextField
+                          className={classNames(
+                            classes.dayTextField,
+                            classes.dense
+                          )}
+                          margin="dense"
+                          inputProps={numberInputProps(classes)}
+                          value={row.qtyS}
+                          onChange={e =>
+                            handleDayChange(e, row.employeeId, "qtyS")
+                          }
+                        />
+                      </TableCell>
+                      <TableCell className={classes.tdCell}>
+                        {row.qtyTotal}
+                      </TableCell>
+                      <TableCell className={classes.tdCell}>
+                        {row.totalAmt}
+                      </TableCell>
+
+                      {overtime && (
+                        <OvertimeTableRowCol
+                          row={row}
+                          handleDayChange={handleDayChange}
+                          classes={classes}
+                        />
+                      )}
+
+                      <TableCell className={classes.tdCell}>
+                        {row.netEarnings}
+                      </TableCell>
+                      <TableCell className={classes.tdCell}>
+                        {row.sss}
+                      </TableCell>
+                      <TableCell className={classes.tdCell}>
+                        {row.philHealth}
+                      </TableCell>
+                      <TableCell align="center">
+                        <IconButton
+                          className={classes.button}
+                          aria-label="Delete"
+                          onClick={() => handleDeleteClick(row.employeeId)}
+                        >
+                          <DeleteIcon />
+                        </IconButton>
+                      </TableCell>
+                    </TableRow>
+                  ))}
+              </TableBody>
+            </Table>
+            <DialogActions>
+              <Button
+                variant="contained"
+                color="primary"
+                className={classes.button}
+                size="small"
+                onClick={() => alert("to be confirmed")}
+              >
+                <Gavel />
+                Confirm
+              </Button>
+            </DialogActions>
+          </Paper>
+        </Paper>
+      </main>
+    </div>
   );
 }
 

@@ -11,10 +11,14 @@ import Paper from "@material-ui/core/Paper";
 import Popper from "@material-ui/core/Popper";
 import MenuItem from "@material-ui/core/MenuItem";
 import MenuList from "@material-ui/core/MenuList";
+import CssBaseline from "@material-ui/core/CssBaseline";
 
 const drawerWidth = 240;
 
 const useStyles = makeStyles(theme => ({
+  body: {
+    backGround: theme.palette.background.default
+  },
   root: {
     display: "flex",
     margin: 24
@@ -77,9 +81,10 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function Sweldo() {
+function Home() {
   const classes = useStyles();
   const theme = useTheme();
+  console.log(classes);
   console.log(theme);
   const [open, setOpen] = React.useState(false);
   const anchorEl = React.useRef(null);
@@ -98,6 +103,7 @@ function Sweldo() {
 
   return (
     <div className={classes.root}>
+      <CssBaseline />
       <AppBar position="fixed" className={classNames(classes.appBar)}>
         <Toolbar>
           <Typography variant="h6" color="inherit">
@@ -118,15 +124,15 @@ function Sweldo() {
                 root: classes.root, // class name, e.g. `classes-nesting-root-x`
                 label: classes.buttonLabel // class name, e.g. `classes-nesting-label-x`
               }}
-              buttonRef={anchorEl}
-              aria-owns={open ? "menu-list-grow" : undefined}
-              aria-haspopup="true"
-              onClick={handleToggle}
+              // buttonRef={anchorEl}
+              // aria-owns={open ? "menu-list-grow" : undefined}
+              // aria-haspopup="true"
+              // onClick={handleToggle}
             >
               Payroll
             </Button>
 
-            <Popper
+            {/* <Popper
               open={open}
               anchorEl={anchorEl.current}
               transition
@@ -152,7 +158,7 @@ function Sweldo() {
                   </Paper>
                 </Grow>
               )}
-            </Popper>
+            </Popper> */}
           </div>
         </Toolbar>
       </AppBar>
@@ -193,4 +199,4 @@ function Sweldo() {
   );
 }
 
-export default Sweldo;
+export default Home;
