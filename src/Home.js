@@ -44,13 +44,15 @@ const useStyles = makeStyles(theme => ({
     justifyContent: "flex-end"
   },
   content: {
-    flexGrow: 1
+    flexGrow: 1,
     // padding: theme.spacing.unit * 3,
     // transition: theme.transitions.create("margin", {
     //   easing: theme.transitions.easing.sharp,
     //   duration: theme.transitions.duration.leavingScreen
     // }),
     // marginLeft: -drawerWidth
+    margin: "0 auto"
+    // maxWidth: 1000
   },
   contentShift: {
     transition: theme.transitions.create("margin", {

@@ -92,7 +92,9 @@ const stylez = theme => ({
   },
   toolbar: theme.mixins.toolbar,
   content: {
-    flexGrow: 1
+    flexGrow: 1,
+    margin: "0 auto"
+    // maxWidth: 1200
   }
 });
 
@@ -298,11 +300,17 @@ function AtzKarlTable(props) {
                   </CustomTableCell>
                   <CustomTableCell>Worker Description</CustomTableCell>
 
-                  <DayTableHeaderCol />
-                  {overtime && <DayTableHeaderCol />}
-                  <CustomTableCell>Net Earnings</CustomTableCell>
-                  <CustomTableCell>SSS</CustomTableCell>
-                  <CustomTableCell>PhilHealth</CustomTableCell>
+                  <DayTableHeaderCol classes={classes} />
+                  {overtime && <DayTableHeaderCol classes={classes} />}
+                  <CustomTableCell className={classes.tdCell}>
+                    Net
+                  </CustomTableCell>
+                  <CustomTableCell className={classes.tdCell}>
+                    SSS
+                  </CustomTableCell>
+                  <CustomTableCell className={classes.tdCell}>
+                    PhilHealth
+                  </CustomTableCell>
                   <CustomTableCell />
                 </TableRow>
               </TableHead>
@@ -465,18 +473,18 @@ AtzKarlTable.propTypes = {
   classes: PropTypes.object.isRequired
 };
 
-function DayTableHeaderCol() {
+function DayTableHeaderCol({ classes }) {
   return (
     <React.Fragment>
-      <CustomTableCell>Rate</CustomTableCell>
+      <CustomTableCell className={classes.tdCell}>Rate</CustomTableCell>
       <CustomTableCell>M</CustomTableCell>
       <CustomTableCell>T</CustomTableCell>
       <CustomTableCell>W</CustomTableCell>
       <CustomTableCell>Th</CustomTableCell>
       <CustomTableCell>F</CustomTableCell>
       <CustomTableCell>S</CustomTableCell>
-      <CustomTableCell>No. of Hrs</CustomTableCell>
-      <CustomTableCell>Total Amt</CustomTableCell>
+      <CustomTableCell className={classes.tdCell}>Hrs</CustomTableCell>
+      <CustomTableCell className={classes.tdCell}>Amt</CustomTableCell>
     </React.Fragment>
   );
 }

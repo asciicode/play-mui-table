@@ -33,13 +33,23 @@ export function useEmployees(
   initialState = [
     {
       employeeId: Math.random(10),
-      lastname: "Catz",
+      lastname: "Catadman",
       firstname: "Allen",
       jobDescription: "Developer",
       rate: 45,
       otMultiplier: 1.3,
       sss: 165,
       philHealth: 65
+    },
+    {
+      employeeId: Math.random(10),
+      lastname: "Magallon",
+      firstname: "Cecille",
+      jobDescription: "Developer",
+      rate: 42,
+      otMultiplier: 1.5,
+      sss: 155,
+      philHealth: 55
     }
   ]
 ) {

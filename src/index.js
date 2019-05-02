@@ -32,7 +32,10 @@ const theme = createMuiTheme({
       // Name of the component ⚛️ / style sheet
       root: {
         // borderBottomColor: 'green'0
-        padding: 0
+        padding: 0,
+        "&:last-child": {
+          paddingRight: 0
+        }
       },
       body: {
         // color: 'white',

@@ -88,7 +88,9 @@ const stylez = theme => ({
   },
   toolbar: theme.mixins.toolbar,
   content: {
-    flexGrow: 1
+    flexGrow: 1,
+    margin: "0 auto"
+    // maxWidth: 1000
   }
 });
 
@@ -165,10 +167,18 @@ function Employee(props) {
                   <CustomTableCell>Firstname</CustomTableCell>
 
                   <CustomTableCell>Job Description</CustomTableCell>
-                  <CustomTableCell>Rate</CustomTableCell>
-                  <CustomTableCell>OT multiplier</CustomTableCell>
-                  <CustomTableCell>SSS</CustomTableCell>
-                  <CustomTableCell>PhilHealth</CustomTableCell>
+                  <CustomTableCell className={classes.tdCell}>
+                    Rate
+                  </CustomTableCell>
+                  <CustomTableCell className={classes.tdCell}>
+                    OT multiplier
+                  </CustomTableCell>
+                  <CustomTableCell className={classes.tdCell}>
+                    SSS
+                  </CustomTableCell>
+                  <CustomTableCell className={classes.tdCell}>
+                    PhilHealth
+                  </CustomTableCell>
                   <CustomTableCell style={{ width: "1%" }} />
                   <CustomTableCell style={{ width: "1%" }} />
                 </TableRow>
